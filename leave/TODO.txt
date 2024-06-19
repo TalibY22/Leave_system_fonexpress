@@ -1,0 +1,24 @@
+A way to show days till he returns = 
+Reason should be provide when rejecting a leave = 
+A way to print leave record for employees = 
+Implement  a way to check Avaliable paid leaves for a employee = 
+Add a table for completed leaves to check when a employee come back from a leave  = 
+Automatic changing of status of leaves = 
+
+
+@receiver(post_save, sender=Leave)
+def update_leave_status(sender, instance, created, **kwargs):
+    if created:  
+        if date.today() >= instance.start_date:
+            
+            active_status = Status.objects.get(name='Active')  
+            instance.status = active_status
+            instance.save()
+    
+   
+    if date.today() >= instance.end_date:
+        
+        if instance.status.name == 'Active':
+            completed_status = Status.objects.get(name='Completed')  
+            instance.save()
+

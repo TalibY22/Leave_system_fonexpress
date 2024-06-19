@@ -1,0 +1,20 @@
+{% extends "leave/base.html"%}
+{%block body%}
+
+<div class="card border-primary mb-3" >
+    <div class="card-header text-center">LOGIN</div>
+    <div class="card-body text-center">
+        
+        <form action="" method="post">
+            {% csrf_token%}
+            {{form}}
+            <button type="submit">LOGIN</button>
+   
+   
+           </form>
+     
+    </div>
+
+        
+{%endblock%}
+       

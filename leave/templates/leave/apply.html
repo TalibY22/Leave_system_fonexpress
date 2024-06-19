@@ -1,0 +1,28 @@
+{%extends "leave/base.html"%}
+
+{%block body%}
+
+
+{%if success%}
+<div class="alert alert-dismissible alert-success">Ur leave request has been sent kindly check for feedback<a href="">Go to homepage</a> </div>
+{%endif%}
+
+
+
+<div class="container d-flex justify-content-center mt-5">
+    <div class="card border-primary mb-3">
+        <div class="card-header bg-primary text-white">Apply for leave</div>
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-block mt-3">Apply</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+{%endblock%}
