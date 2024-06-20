@@ -190,19 +190,12 @@ a.sidebar-link:hover {
                         <i class="fa-solid fa-money-bill"></i>
                     
                         
-                        <span>Leave</span>
+                        <span>Apply</span>
                     </a>
                 </li>
 
-                {% if manager %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all_leaves' %}">All Leaves</a>
-                </li>
-            
-            
-            
                 <li class="sidebar-item">
-                    <a href="{%url 'apply'%}" class="sidebar-link">
+                    <a href="{%url 'records'%}" class="sidebar-link">
                         <i class="fa-solid fa-money-bill"></i>
                     
                         
@@ -210,14 +203,16 @@ a.sidebar-link:hover {
                     </a>
                 </li>
 
+               
             
-            
-            
-            
-            
-            
-                {% endif %}
+              
 
+            
+            
+            
+            
+            
+            
         </aside>
         <div class="main p-3">
           {%block body%}

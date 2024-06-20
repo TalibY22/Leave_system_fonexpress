@@ -7,6 +7,98 @@
 
 
 
+<div class="card border-primary mb-3">
+    <div class="card-header text-center">leave requests</div>
+    <div class="card-body">
+      
+     
+   
+      
+
+
+      
+      
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">leave_type</th>
+            <th scope="col">reason</th>
+            <th scope="col">duration</th>
+            <th scope="col">start_date</th>
+            <th scope="col">end_date</th>
+            <th scope="col">Person covering</th>
+            <th scope="col">status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for leave in leaves %}
+          <tr class="table-primary">
+            <td>
+              <a href="#"><button type="button" class="btn btn-primary me-1 btn-sm">View <i class="fa-solid fa-pen-to-square"></i></button></a>
+              
+                
+
+              
+        
+              
+            </td>
+            
+            <td>{{ leave.leave_type }}</td>
+            <td>{{ leave.reason }}</td>
+            <td>{{ leave.duration }}days</td>
+            <td>{{ leave.start_date }}</td>
+            <td>{{ leave.end_date }}</td>
+            <td>{{ leave.person_covering }}</td>
+            <td>{{ leave.status }}</td>
+
+          </tr>
+            </td>
+          </tr>
+
+
+
+
+
+           
+
+         
+    
+
+
+
+
+
+
+
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

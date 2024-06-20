@@ -31,6 +31,11 @@ def apply_leave(request):
         return render(request,'leave/apply.html',{"form":LeaveForm})    
 
 
+@login_required
+def user_leaves(request):
+     leaves =Leave.objects.filter(user=request.user)
+
+     return render(request,'leave/leave_history.html',{"leaves":leaves})
 
 
 ######################
@@ -109,10 +114,11 @@ def Accept_leave(request, id):
 def active_leaves(request):
     current_date = date.today()
     leaves_on_date = Leave.objects.filter(start_date__lte=current_date,status_id=2, end_date__gte=current_date)
-
+    
     if not leaves_on_date.exists():
          return render(request, 'leave/admin/active_leaves.html', {'success': True})
          
+     
 
     return render(request, 'leave/admin/active_leaves.html', {'leaves': leaves_on_date})
 

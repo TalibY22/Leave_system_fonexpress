@@ -1,19 +1,18 @@
 {% extends "leave/base.html"%}
 {%block body%}
 
-<div class="card border-primary mb-3" >
-    <div class="card-header text-center">LOGIN</div>
-    <div class="card-body text-center">
+<div class="card border-primary mb-3 mx-auto" style="width: 500px;">
+    <div class="card-header text-center bg-primary text-white">LOGIN PHONEEXPRESS</div>
+    <div class="card-body">
         
-        <form action="" method="post">
-            {% csrf_token%}
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
             {{form}}
-            <button type="submit">LOGIN</button>
-   
-   
-           </form>
+            <button type="submit" class="btn btn-primary btn-block mt-3">LOGIN</button>
+        </form>
      
     </div>
+</div>
 
         
 {%endblock%}

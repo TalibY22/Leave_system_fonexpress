@@ -4,6 +4,9 @@ A way to print leave record for employees =
 Implement  a way to check Avaliable paid leaves for a employee = dependant
 Add a table for completed leaves to check when a employee come back from a leave  = 
 Automatic changing of status of leaves = 
+users to be able to view their leave requests = 
+
+
 
 
 @receiver(post_save, sender=Leave)
@@ -21,4 +24,3 @@ def update_leave_status(sender, instance, created, **kwargs):
         if instance.status.name == 'Active':
             completed_status = Status.objects.get(name='Completed')  
             instance.save()
-
