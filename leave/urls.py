@@ -21,10 +21,13 @@ urlpatterns = [
    path("manager/accepted_leaves",views.view_accepted_leaves,name="accepted_leaves"),
    path("manager/rejected_leaves",views.view_rejected_leaves,name="rejected_leaves"),
    path("manager/active_leaves",views.active_leaves,name="active"),
+   path("manager/employees",views.list_employees,name="employee"),
+   
    
    
    path("manager/reject/<int:id>",views.reject_leave,name="reject"),
-    path("manager/accept/<int:id>",views.Accept_leave,name="accept")
+   path("manager/accept/<int:id>",views.Accept_leave,name="accept"),
+   path("manager/history/<int:id>",views.leave_history,name="history")
     
    
 ]

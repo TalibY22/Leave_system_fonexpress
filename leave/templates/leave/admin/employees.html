@@ -4,35 +4,36 @@
 
 
 <div class="card border-primary mb-3">
-    <div class="card-header text-center">Upcoming leaves</div>
+    <div class="card-header text-center">Employees</div>
     <div class="card-body">
       
      
-   
       
-
-
+      
       
       
       <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">Action</th>
-            <th scope="col">Employee</th>
-            <th scope="col">leave_type</th>
-            <th scope="col">reason</th>
-            <th scope="col">duration</th>
-            <th scope="col">start_date</th>
-            <th scope="col">end_date</th>
-            <th scope="col">Person covering</th>
-            <th scope="col">status</th>
+            <th scope="col">id</th>
+            <th scope="col">UserName</th>
+            <th scope="col">First_Name</th>
+            <th scope="col">Last_Name</th>
+            
+            
+            <th scope="col">email</th>
+            <th scope="col">Date joined</th>
+
+            <th scope="col">last_login</th>
+            
           </tr>
         </thead>
         <tbody>
-          {% for leave in leaves %}
+          {% for user in users %}
           <tr class="table-primary">
             <td>
-              <a href="#"><button type="button" class="btn btn-primary me-1 btn-sm">View <i class="fa-solid fa-pen-to-square"></i></button></a>
+              <a href="{%url 'history' user.id%}"><button type="button" class="btn btn-primary me-1 btn-sm">Leave history<i class="fa-solid fa-pen-to-square"></i></button></a>
               
                 
 
@@ -40,15 +41,15 @@
         
               
             </td>
-            <td>{{leave.user}}</td>
-            <td>{{ leave.leave_type }}</td>
-            <td>{{ leave.reason }}</td>
-            <td>{{ leave.duration }}days</td>
-            <td>{{ leave.start_date }}</td>
-            <td>{{ leave.end_date }}</td>
-            <td>{{ leave.person_covering }}</td>
-            <td>{{ leave.status }}</td>
-
+            <td>{{user.id}}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}days</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.start_date }}</td>
+            <td>{{ user.date_joined }}</td>
+            
+            
           </tr>
             </td>
           </tr>
@@ -73,7 +74,7 @@
                     <p>Are you sure you want to Reject this request</p>
                   </div>
                   <div class="modal-footer">
-                    <form action="{%url 'reject' leave.id%}" method="POST">
+                    <form action="" method="POST">
                       {% csrf_token %}
                       <input type="submit" class="btn btn-primary" value="Yes">
                     </form>

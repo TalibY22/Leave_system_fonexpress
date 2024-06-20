@@ -2,6 +2,10 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .forms import LeaveForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Leave,Status
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+
+
 from datetime import date 
 
 
@@ -12,7 +16,7 @@ def is_manager(user):
 @login_required
 def home(request):
     if is_manager(user=request.user):
-         return render(request,"leave/admin/admin_base.html")
+         return render(request,"leave/admin/admin_dashboard.html")
     return render(request,"leave/home.html")
 
 @login_required
@@ -64,6 +68,14 @@ def reject_leave(request, id):
         leave.status = rejected_status
         leave.save()
 
+        send_mail(
+           "Leave Rejected",
+           "someone else has requsted that day kindly select another date",
+            "foneexpress@gmail.com",
+            ["yakubtalib70@gmail.com"],
+            fail_silently=False,
+          )
+
         # MY FUTURE SELF THIS WHERE UR MESSAGE CODE GOES DONT MESS THIS UP
 
       
@@ -78,6 +90,14 @@ def Accept_leave(request, id):
         accepted_status = Status.objects.get(status='Accepted')
         leave.status = accepted_status
         leave.save()
+
+        send_mail(
+           "Leave accepted",
+           "U may proceed to have a leave on the date specified",
+            "foneexpress@gmail.com",
+            ["yakubtalib70@gmail.com"],
+            fail_silently=False,
+)
 
         # MY FUTURE SELF THIS WHERE UR MESSAGE CODE GOES DONT MESS THIS UP
 
@@ -95,3 +115,25 @@ def active_leaves(request):
          
 
     return render(request, 'leave/admin/active_leaves.html', {'leaves': leaves_on_date})
+
+
+@login_required
+@user_passes_test(is_manager)
+def leave_history(request,id):
+    current_date = date.today()
+    leaves = Leave.objects.filter(user_id=id,status_id=2)
+    Total_leaves = Leave.objects.filter(user_id=id,status_id=2).count()
+    Sick_leaves = Leave.objects.filter(user_id=id,leave_type_id=1).count()
+
+
+    if not leaves.exists():
+         return render(request, 'leave/admin/employee_history.html', {'success': True})
+         
+
+    return render(request, 'leave/admin/employee_history.html', {'leaves': leaves,'total_leaves':Total_leaves,'sick_leaves':Sick_leaves})
+
+@login_required
+@user_passes_test(is_manager)
+def list_employees(request):
+    user = User.objects.all()
+    return render(request, 'leave/admin/employees.html',{'users':user})

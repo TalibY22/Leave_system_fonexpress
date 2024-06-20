@@ -1,13 +1,55 @@
 {%extends "leave/admin/admin_base.html"%}
 {%block body%}
 
+{% for leave in leaves %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Employee Name: {{leave.user}}</div>
+                <div class="card-body">
+                    <h5 class="card-title">Total leaves taken</h5>
+                    <p class="card-text">{{total_leaves}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-light mb-3" style="max-width: 18rem;">
+                <div class="card-header">Sick leaves taken</div>
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text">{{sick_leaves}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
 
 
 <div class="card border-primary mb-3">
-    <div class="card-header text-center">Leave requests</div>
+    <div class="card-header text-center">Previous Leave requests</div>
     <div class="card-body">
       
-     
+     {%if success%}
+     <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">No history</h4>
+        <p>This employee has no history of leave  </p>
+        <hr>
+        
+      </div>
+
+
+     {%endif%}
       
       
       
@@ -27,19 +69,15 @@
           </tr>
         </thead>
         <tbody>
-          {% for leave in leaves %}
+         
           <tr class="table-primary">
             <td>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Accept{{leave.id}}">
-                    Accept<i class="fa-solid fa-check"></i>
-                  </button>
+              <a href="#"><button type="button" class="btn btn-danger me-1 btn-sm">Delete record<i class="fa-solid fa-pen-to-square"></i></button></a>
+              
                 
 
-              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{leave.id}}">
-                Reject<i class="fa-solid fa-trash-can fa-lg"></i>
-              </button>
-              <a href="{%url 'history' leave.user.id%}"><button type="button" class="btn btn-primary me-1 btn-sm">History<i class="fa-solid fa-pen-to-square"></i></button></a>
               
+        
               
             </td>
             <td>{{leave.user}}</td>
@@ -59,7 +97,7 @@
 
 
 
-            <!-- Reject Modal -->
+            <!-- Delete Modal -->
             <div class="modal" id="delete{{leave.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -76,11 +114,7 @@
                   </div>
                   <div class="modal-footer">
                     <form action="{%url 'reject' leave.id%}" method="POST">
-                      {%csrf_token%}
-                      
-                      <label>Specify a reason</label>
-                      <input class="form-control" type="text" name="reason">
-
+                      {% csrf_token %}
                       <input type="submit" class="btn btn-primary" value="Yes">
                     </form>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -88,32 +122,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Accept Modal -->
-            <div class="modal" id="Accept{{leave.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">
-                        Leave:{{leave.user}}{{leave.reason}}
-                      </h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <p>Are you sure you want to Accept this request</p>
-                    </div>
-                    <div class="modal-footer">
-                      <form action="{%url 'accept' leave.id%}" method="POST">
-                        {% csrf_token %}
-                        <input type="submit" class="btn btn-primary" value="Yes">
-                      </form>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
 
          
