@@ -1,8 +1,6 @@
 {%extends "leave/admin/admin_base.html"%}
 {%block body%}
 
-{% for leave in leaves %}
-
 
 
 
@@ -48,7 +46,9 @@
           </tr>
         </thead>
         <tbody>
-         
+        {% for leave in leaves %}
+
+
           <tr class="table-primary">
             <td>
               <a href="#"><button type="button" class="btn btn-danger me-1 btn-sm">Delete record<i class="fa-solid fa-pen-to-square"></i></button></a>

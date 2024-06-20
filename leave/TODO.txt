@@ -24,3 +24,38 @@ def update_leave_status(sender, instance, created, **kwargs):
         if instance.status.name == 'Active':
             completed_status = Status.objects.get(name='Completed')  
             instance.save()
+
+
+
+
+import openpyxl
+from django.http import HttpResponse
+from .models import Leave  # Import your Leave model
+
+def export_leaves_to_excel(request):
+    # Create an in-memory workbook and worksheet
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Leave Requests'
+    
+    # Define the header row
+    headers = ['Employee', 'Leave Type', 'Reason', 'Duration', 'Start Date', 'End Date', 'Person Covering', 'Status']
+    ws.append(headers)
+    
+    # Add data rows
+    leaves = Leave.objects.all()
+    for leave in leaves:
+        ws.append([leave.user.username, leave.leave_type, leave.reason, leave.duration, leave.start_date, leave.end_date, leave.person_covering, leave.status])
+    
+    # Prepare response
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=leave_requests.xlsx'
+    wb.save(response)
+    
+    return response
+
+
+
+
+
+
