@@ -12,7 +12,7 @@ apparmor==3.0.8
 appdirs==1.4.4
 applicationinsights==0.11.10
 argcomplete==2.0.0
-asgiref==3.6.0
+asgiref==3.6.
 asn1crypto==1.5.1
 asttokens==2.2.1
 async-generator==1.10
