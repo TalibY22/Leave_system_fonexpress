@@ -59,5 +59,3 @@ def export_leaves_to_excel(request):
 
 
 
-HRM PROPOSOL 
-Horilla
