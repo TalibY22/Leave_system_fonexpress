@@ -1,1 +1,1 @@
-web: gunicorn Leave_system_fonexpress.wsgi  --log-file-
+web: gunicorn Leave_system_fonexpress.wsgi
