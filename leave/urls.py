@@ -23,12 +23,13 @@ urlpatterns = [
    path("manager/rejected_leaves",views.view_rejected_leaves,name="rejected_leaves"),
    path("manager/active_leaves",views.active_leaves,name="active"),
    path("manager/employees",views.list_employees,name="employee"),
+   path("manager/search",views.search_employees,name="search"),
    
    
    
    path("manager/reject/<int:id>",views.reject_leave,name="reject"),
    path("manager/accept/<int:id>",views.Accept_leave,name="accept"),
-   path("manager/history/<int:id>",views.leave_history,name="history")
-    
-   
+   path("manager/history/<int:id>",views.leave_history,name="history"),
+   path("manager/download/<int:id>",views.Export_excel,name="excel"),
+    path("manager/delete/<int:id>",views.Delete_leave_record,name="delete"),
 ]

@@ -1,10 +1,15 @@
-from django.shortcuts import render,get_object_or_404,redirect
+from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
 from .forms import LeaveForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Leave,Status
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.http import JsonResponse
+import json
+import openpyxl
+import pandas as pd
 
+import io
 
 from datetime import date 
 
@@ -143,3 +148,57 @@ def leave_history(request,id):
 def list_employees(request):
     user = User.objects.all()
     return render(request, 'leave/admin/employees.html',{'users':user})
+
+
+@login_required
+@user_passes_test(is_manager)
+def Export_excel(request,id):
+
+     previous_leave = Leave.objects.filter(user_id=id,status_id=2)
+      
+     Data = {
+        'Name': previous_leave.user_id,
+        'Reason': previous_leave.reason,
+        'start_date': previous_leave.start_date,
+        'Person Covered': previous_leave.person_covering ,
+        'Duration': previous_leave.duration,
+    }
+     df = pd.DataFrame(Data)
+
+    # Creating an in-memory output stream for the Excel file
+     output = io.BytesIO()
+     with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Employees')
+
+    # Setting the HTTP response
+     response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+     response['Content-Disposition'] = 'attachment; filename=employees.xlsx'
+
+     return response
+
+
+@login_required
+@user_passes_test(is_manager)
+def search_employees(request):
+    if 'term' in request.GET:
+        qs = User.objects.filter(First_Name__icontains=request.GET.get('term'))
+        names = list()
+        for employee in qs:
+            names.append(employee.First_Name + ' ' + employee.Last_name)
+        return JsonResponse(names, safe=False)
+    return render(request, 'search.html')
+
+
+
+@login_required
+@user_passes_test(is_manager)
+def Delete_leave_record(request,id):
+     if request.method =='POST':
+          record = Leave.objects.filter(id=id)
+          record.delete()
+
+          return redirect('rejected_leaves')
+
