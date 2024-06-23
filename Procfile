@@ -1,1 +1,0 @@
-web: gunicorn Leave_system_fonexpress.wsgi --access-logfile
