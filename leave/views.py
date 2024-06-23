@@ -6,9 +6,6 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import JsonResponse
 
-import pandas as pd
-
-import io
 
 from datetime import date 
 
