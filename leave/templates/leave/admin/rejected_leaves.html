@@ -73,13 +73,14 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <p>Are you sure you want to Reject this request</p>
-                  </div>
-                  <div class="modal-footer">
+                    <p>Give a reason for rejecting the request</p>
                     <form action="{%url 'reject' leave.id%}" method="POST">
                       {% csrf_token %}
                       <input type="submit" class="btn btn-primary" value="Yes">
                     </form>
+                  </div>
+                  <div class="modal-footer">
+                    
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                   </div>
                 </div>

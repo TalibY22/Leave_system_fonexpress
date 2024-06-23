@@ -73,14 +73,15 @@ def reject_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
 
     if request.method == 'POST':
-      
+        
+        reason = request.get('reason')
         rejected_status = Status.objects.get(status='Rejected')
         leave.status = rejected_status
         leave.save()
-
+        
         send_mail(
            "Leave Rejected",
-           "someone else has requsted that day kindly select another date",
+             reason,
             "foneexpress@gmail.com",
             ["yakubtalib70@gmail.com"],
             fail_silently=False,
