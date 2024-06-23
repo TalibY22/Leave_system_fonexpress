@@ -5,8 +5,7 @@ from .models import Leave,Status
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import JsonResponse
-import json
-import openpyxl
+
 import pandas as pd
 
 import io
@@ -150,35 +149,6 @@ def list_employees(request):
     user = User.objects.all()
     return render(request, 'leave/admin/employees.html',{'users':user})
 
-
-@login_required
-@user_passes_test(is_manager)
-def Export_excel(request,id):
-
-     previous_leave = Leave.objects.filter(user_id=id,status_id=2)
-      
-     Data = {
-        'Name': previous_leave.user_id,
-        'Reason': previous_leave.reason,
-        'start_date': previous_leave.start_date,
-        'Person Covered': previous_leave.person_covering ,
-        'Duration': previous_leave.duration,
-    }
-     df = pd.DataFrame(Data)
-
-    # Creating an in-memory output stream for the Excel file
-     output = io.BytesIO()
-     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Employees')
-
-    # Setting the HTTP response
-     response = HttpResponse(
-        output.getvalue(),
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-     response['Content-Disposition'] = 'attachment; filename=employees.xlsx'
-
-     return response
 
 
 @login_required
