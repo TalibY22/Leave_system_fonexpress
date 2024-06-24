@@ -73,6 +73,7 @@ def reject_leave(request, id):
         reason = request.get('reason')
         rejected_status = Status.objects.get(status='Rejected')
         leave.status = rejected_status
+        email = leave.user.email
         leave.save()
         
         send_mail(
