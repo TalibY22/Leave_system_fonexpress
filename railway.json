@@ -4,7 +4,7 @@
         "builder": "NIXPACKS"
     },
     "deploy": {
-        "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && Leave_system_fonexpress.wsgi",
+        "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn Leave_system_fonexpress.wsgi",
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10
     }
