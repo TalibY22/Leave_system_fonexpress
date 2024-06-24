@@ -141,6 +141,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hzhzhhsj58@gmail.com'  # Replace with your email address
 EMAIL_HOST_PASSWORD = 'lyog wdhy dzrv pvkk'  # Replace with your email password
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://leave-fdl.up.railway.app'
-]
