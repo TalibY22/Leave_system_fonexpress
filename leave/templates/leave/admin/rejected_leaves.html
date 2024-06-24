@@ -76,7 +76,7 @@
                     <p>Give a reason for rejecting the request</p>
                     <form action="{%url 'reject' leave.id%}" method="POST">
                       {% csrf_token %}
-                      <input type="submit" class="btn btn-primary" value="Yes">
+                      <input type="submit" name="reason" class="btn btn-primary" value="Yes">
                     </form>
                   </div>
                   <div class="modal-footer">

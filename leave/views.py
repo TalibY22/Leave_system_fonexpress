@@ -70,7 +70,8 @@ def reject_leave(request, id):
 
     if request.method == 'POST':
         
-        reason = request.get('reason')
+        reason = request.POST.get('reason')
+
         rejected_status = Status.objects.get(status='Rejected')
         leave.status = rejected_status
         email = leave.user.email
@@ -80,7 +81,7 @@ def reject_leave(request, id):
            "Leave Rejected",
              reason,
             "foneexpress@gmail.com",
-            ["yakubtalib70@gmail.com"],
+            email,
             fail_silently=False,
           )
 
@@ -97,13 +98,14 @@ def Accept_leave(request, id):
       
         accepted_status = Status.objects.get(status='Accepted')
         leave.status = accepted_status
+        email = leave.user.email
         leave.save()
 
         send_mail(
            "Leave accepted",
            "U may proceed to have a leave on the date specified",
             "foneexpress@gmail.com",
-            ["yakubtalib70@gmail.com"],
+            email,
             fail_silently=False,
 )
 
