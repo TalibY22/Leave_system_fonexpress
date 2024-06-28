@@ -6,6 +6,8 @@ Add a table for completed leaves to check when a employee come back from a leave
 Automatic changing of status of leaves = 
 users to be able to view their leave requests = 
 Enable users to be created with the employee form = 
+add celery  = 
+ajax request = 
 
 
 

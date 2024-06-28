@@ -125,19 +125,21 @@ def Accept_leave(request, id):
         leave.status = accepted_status
         email = leave.user.email
         leave.save()
-
         send_mail(
            "Leave accepted",
            "U may proceed to have a leave on the date specified",
             "foneexpress@gmail.com",
             ["yakubtalib70@gmail.com"],
             fail_silently=False,
-)
+        ) 
+
+        
 
         # MY FUTURE SELF THIS WHERE UR MESSAGE CODE GOES DONT MESS THIS UP
 
       
-        return redirect('view_all_leaves')  
+        return redirect('view_all_leaves') 
+        
     
 @login_required
 @user_passes_test(is_manager)
