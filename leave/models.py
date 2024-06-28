@@ -7,10 +7,14 @@ from django.contrib.auth import get_user
 
 class LeaveType(models.Model):
     leave_type = models.CharField(max_length=200)
-    # ... Other business fields
-
+    
     def __str__(self):
         return self.leave_type
+
+
+
+
+
 
 
 class Status(models.Model):
