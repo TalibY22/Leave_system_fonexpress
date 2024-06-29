@@ -1,142 +1,117 @@
-{%extends "leave/admin/admin_base.html"%}
-{%block body%}
-
-
-
-
+{% extends "leave/admin/admin_base.html" %}
+{% block body %}
 
 <div class="card text-center mb-3">
-  <div class="card-header">Employee name:{{employee}}
-    
+  <div class="card-header">Employee name: {{employee}}</div>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+          <div class="card-header">Total off days taken</div>
+          <div class="card-body">
+            <h5 class="card-title">{{total_leaves}}</h5>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+          <div class="card-header">Sick days taken</div>
+          <div class="card-body">
+            <h5 class="card-title">1</h5>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+          <div class="card-header">Annual paid days remaining</div>
+          <div class="card-body">
+            <h5 class="card-title">3</h5>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+          <div class="card-header">Additional Card</div>
+          <div class="card-body">
+            <h5 class="card-title">Value</h5>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="card-body">
-    <div class="card text-white bg-primary mb-3" style="max-width: 12rem;">
-      <div class="card-header">Total Leaves taken</div>
-      <div class="card-body">
-        <h5 class="card-title">{{total_leaves}}</h5>
-       
-      </div>
-    
-   
-  
-  
-  
-  
-  </div>
-  <div class="card-footer text-muted">
-    2024
-  </div>
+  <div class="card-footer text-muted">2024</div>
 </div>
 
-
-
-
-
-
-
 <div class="card border-primary mb-3">
-    <div class="card-header text-center">Previous Leave requests</div>
-    <div class="card-body">
-      
-     {%if success%}
-     <div class="alert alert-success" role="alert">
-        <h4 class="alert-heading">No history</h4>
-        <p>This employee has no history of leave  </p>
-        <hr>
-        
-      </div>
-
-
-     {%endif%}
-      
-      
-      
-      
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Action</th>
-            <th scope="col">Employee</th>
-            <th scope="col">leave_type</th>
-            <th scope="col">reason</th>
-            <th scope="col">duration</th>
-            <th scope="col">start_date</th>
-            <th scope="col">end_date</th>
-            <th scope="col">Person covering</th>
-            <th scope="col">status</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for leave in leaves %}
-
-
-          <tr class="table-primary">
-            <td>
-              <a href="#"><button type="button" class="btn btn-danger me-1 btn-sm">Delete record<i class="fa-solid fa-pen-to-square"></i></button></a>
-              
-                
-
-              
-        
-              
-            </td>
-            <td>{{leave.user}}</td>
-            <td>{{ leave.leave_type }}</td>
-            <td>{{ leave.reason }}</td>
-            <td>{{ leave.duration }}days</td>
-            <td>{{ leave.start_date }}</td>
-            <td>{{ leave.end_date }}</td>
-            <td>{{ leave.person_covering }}</td>
-            <td>{{ leave.status }}</td>
-
-          </tr>
-            </td>
-          </tr>
-
-
-
-
-
-            <!-- Delete Modal -->
-            <div class="modal" id="delete{{leave.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">
-                      Leave:{{leave.user}}{{leave.reason}}
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true"></span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to Reject this request</p>
-                  </div>
-                  <div class="modal-footer">
-                    <form action="{%url 'reject' leave.id%}" method="POST">
-                      {% csrf_token %}
-                      <input type="submit" class="btn btn-primary" value="Yes">
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-         
+  <div class="card-header text-center">Previous Leave requests</div>
+  <div class="card-body">
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">No history</h4>
+      <p>This employee has no history of leave</p>
+      <hr>
+    </div>
+    {% endif %}
     
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Action</th>
+          <th scope="col">Employee</th>
+          <th scope="col">Leave Type</th>
+          <th scope="col">Reason</th>
+          <th scope="col">Duration</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col">Person Covering</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for leave in leaves %}
+        <tr class="table-primary">
+          <td>
+            <a href="#"><button type="button" class="btn btn-danger me-1 btn-sm">Delete record<i class="fa-solid fa-pen-to-square"></i></button></a>
+          </td>
+          <td>{{leave.user}}</td>
+          <td>{{leave.leave_type}}</td>
+          <td>{{leave.reason}}</td>
+          <td>{{leave.duration}} days</td>
+          <td>{{leave.start_date}}</td>
+          <td>{{leave.end_date}}</td>
+          <td>{{leave.person_covering}}</td>
+          <td>{{leave.status}}</td>
+        </tr>
+
+        <!-- Delete Modal -->
+        <div class="modal" id="delete{{leave.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Leave: {{leave.user}} - {{leave.reason}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to reject this request?</p>
+              </div>
+              <div
 
 
 
 
-
-
-
-
-          {% endfor %}
-        </tbody>
+          
+          
+          
+          
+            {% endfor %}
+            </tbody>
       </table>
     </div>
   </div>

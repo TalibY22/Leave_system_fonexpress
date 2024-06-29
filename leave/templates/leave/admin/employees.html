@@ -6,12 +6,102 @@
 <div class="card border-primary mb-3">
     <div class="card-header text-center">Employees</div>
     <div class="card-body">
-      
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Add">
+        Add employee<i class="fa-solid fa-trash-can fa-lg"></i>
+      </button>
       <form class="form-inline mb-3" style="justify-content: center;">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
       
+
+      <!--MODAL FOR ADDING EMPLOYEES-->
+      <div class="modal" id="Add" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add an Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="mb-3">
+                            {{ form.department.label_tag }}
+                            {{ form.department }}
+                            <!-- Add any custom error rendering for department field -->
+                            {% if form.department.errors %}
+                                {% for error in form.department.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.branch.label_tag }}
+                            {{ form.branch }}
+                            <!-- Add any custom error rendering for branch field -->
+                            {% if form.branch.errors %}
+                                {% for error in form.branch.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.staff_id.label_tag }}
+                            {{ form.staff_id }}
+                            <!-- Add any custom error rendering for staff_id field -->
+                            {% if form.staff_id.errors %}
+                                {% for error in form.staff_id.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.First_Name.label_tag }}
+                            {{ form.First_Name }}
+                            {% if form.First_Name.errors %}
+                                {% for error in form.First_Name.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.Last_name.label_tag }}
+                            {{ form.Last_name }}
+                            {% if form.Last_name.errors %}
+                                {% for error in form.Last_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone_number.label_tag }}
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                {% for error in form.phone_number.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.Email.label_tag }}
+                            {{ form.Email }}
+                            {% if form.Email.errors %}
+                                {% for error in form.Email.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-3">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
 
    
@@ -23,24 +113,26 @@
         <thead>
           <tr>
             <th scope="col">Action</th>
-            <th scope="col">id</th>
-            <th scope="col">UserName</th>
-            <th scope="col">First_Name</th>
-            <th scope="col">Last_Name</th>
+            <th scope="col">staff id</th>
+            <th scope="col">Department</th>
+            <th scope="col">Branch</th>
+            <th scope="col">Position</th>
             
             
-            <th scope="col">email</th>
-            <th scope="col">Date joined</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
 
-            <th scope="col">last_login</th>
+            <th scope="col">PhoneNumber</th>
+            <th scope="col">Email</th>
             
+
           </tr>
         </thead>
         <tbody>
-          {% for user in users %}
+          {% for employee in employees %}
           <tr class="table-primary">
             <td>
-              <a href="{%url 'history' user.id%}"><button type="button" class="btn btn-primary me-1 btn-sm">Leave history<i class="fa-solid fa-pen-to-square"></i></button></a>
+              <a href="{%url 'history' employee.user_id%}"><button type="button" class="btn btn-primary me-1 btn-sm">Leave history<i class="fa-solid fa-pen-to-square"></i></button></a>
               
                 
 
@@ -48,14 +140,14 @@
         
               
             </td>
-            <td>{{user.id}}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.last_name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.start_date }}</td>
-            <td>{{ user.date_joined }}</td>
-            
+            <td>{{employee.staff_id}}</td>
+            <td>{{ employee.department }}</td>
+            <td>{{ employee.branch }}</td>
+            <td>{{ employee.position }}</td>
+            <td>{{ employee.First_name }}</td>
+            <td>{{ employee.last_name }}</td>
+            <td>{{ employee.phone_number }}</td>
+            <td>{{ employee.Email }}</td>            
             
           </tr>
             </td>

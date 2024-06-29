@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Iterable
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
@@ -7,7 +7,7 @@ from django.contrib.auth import get_user
 
 class LeaveType(models.Model):
     leave_type = models.CharField(max_length=200)
-    Number_of_days  = models.IntegerField
+    Number_of_days  = models.IntegerField()
     
     def __str__(self):
         return self.leave_type
@@ -44,10 +44,12 @@ class Branch(models.Model):
 
 
 class Employee(models.Model):
-      user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+      user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    
       department = models.ForeignKey(Department,on_delete=models.CASCADE)
       branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
       
+      staff_id=models.IntegerField()
       position = models.CharField(max_length=100)
       First_Name = models.CharField(max_length=100)
       Last_name = models.CharField(max_length=100)
@@ -56,6 +58,25 @@ class Employee(models.Model):
 
       Email = models.EmailField(unique=True)
 
+      def save(self, *args, **kwargs):
+          if not self.user:
+            username = self.First_Name.lower()
+            password = "123456789Talib"
+            
+            
+              # Ensure you handle password securely in production
+            self.user = User.objects.create_user(username=username, password=password)
+          super().save(*args, **kwargs)
+  
+        # Create leave balances after saving employee
+          leave_types = LeaveType.objects.all()
+          for leave_type in leave_types:
+             leave_balancer.objects.create(employee_id=self, leave_type=leave_type, remaining_days=leave_type.Number_of_days)
+         
+
+
+      def __str__(self) -> str:
+          return self.First_Name
 
 
 #THIS MODEL IS THE ONE WHICH IS RESPONSIBLE  FOR TRACKING LEAVe DAYS
@@ -66,10 +87,9 @@ class leave_balancer(models.Model):
       employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
       leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)
       remaining_days = models.IntegerField()
+      carry_forward_days = models.IntegerField(default=0)
 
-      def __str__(self) -> str:
-          return self.remaining_days
-
+      
 class Leave(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key to User
     leave_type = models.ForeignKey(LeaveType,on_delete=models.CASCADE)
@@ -82,6 +102,10 @@ class Leave(models.Model):
      
     def save(self, *args, **kwargs):
         self.duration = (self.end_date - self.start_date).days + 1
+        # Check leave balance
+        balance = leave_balancer.objects.get(employee__user=self.user, leave_type=self.leave_type)
+        if self.duration > balance.remaining_days:
+            raise ValueError(f"Not enough leave balance. Available: {balance.remaining_days}, Requested: {self.duration}")
         super().save(*args, **kwargs)
 
 
@@ -98,6 +122,15 @@ class Aprroved_leave(models.Model):
       leaveid=models.ForeignKey(Leave,on_delete=models.CASCADE)
       approved_by = models.ForeignKey(User,on_delete=models.CASCADE)
       approved_date = models.DateField(auto_now_add=True)
-
+     
+      def save(self, *args, **kwargs):
+        # Deduct leave balance
+        leave = self.leaveid
+        balance = leave_balancer.objects.get(employee__user=leave.user, leave_type=leave.leave_type)
+        balance.remaining_days -= leave.duration
+        balance.save()
+        super().save(*args, **kwargs)
+      
+      
       def __str__(self) -> str:
           return self.approved_date

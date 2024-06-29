@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
-from .forms import LeaveForm
+from .forms import LeaveForm,EmployeeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Leave,Status
+from .models import Leave,Status,Aprroved_leave,leave_balancer,Employee
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from .blah import send_email
@@ -37,6 +37,11 @@ def apply_leave(request):
             if form.is_valid():
                 new_leave = form.save(commit=False)
                 new_leave.user = request.user
+                balance = leave_balancer.objects.get(employee__user=request.user, leave_type=new_leave.leave_type)
+                total_available_days = balance.remaining_days + balance.carry_forward_days
+                if new_leave.duration > total_available_days:
+                   error_message = f"Not enough leave balance. Available: {total_available_days}, Requested: {new_leave.duration}"
+                   return render(request, 'leave/apply.html', {"form": form, "fail": error_message})
                 new_leave.save()
 
                 send_mail(
@@ -127,6 +132,12 @@ def Accept_leave(request, id):
         leave.status = accepted_status
         email = leave.user.email
         leave.save()
+        approved_leave = Aprroved_leave.objects.create(leaveid=leave, approved_by=request.user)
+       
+
+       
+       
+       
         send_mail(
            "Leave accepted",
            "U may proceed to have a leave on the date specified",
@@ -178,8 +189,18 @@ def leave_history(request,id):
 @login_required
 @user_passes_test(is_manager)
 def list_employees(request):
-    user = User.objects.all()
-    return render(request, 'leave/admin/employees.html',{'users':user})
+    user = Employee.objects.all()
+    if request.method == 'POST':
+         form = EmployeeForm(request.POST)
+         if form.is_valid():
+            form.save()
+            return render(request, 'leave/admin/employees.html',{'users':user,'form':EmployeeForm()})
+
+
+
+               
+   
+    return render(request, 'leave/admin/employees.html',{'employees':user,'form':EmployeeForm()})
 
 
 
