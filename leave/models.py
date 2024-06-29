@@ -34,12 +34,28 @@ class Department(models.Model):
         return self.name
     
 
+class Branch(models.Model):
+     name = models.CharField(max_length=255)
+     location = models.CharField(max_length=255)
+
+     def __str__(self) -> str:
+         return self.location
+
+
+
 class Employee(models.Model):
       user_id = models.ForeignKey(User,on_delete=models.CASCADE)
       department = models.ForeignKey(Department,on_delete=models.CASCADE)
+      branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
+      
+      position = models.CharField(max_length=100)
       First_Name = models.CharField(max_length=100)
       Last_name = models.CharField(max_length=100)
+      phone_number = models.IntegerField(unique=True)
+
+
       Email = models.EmailField(unique=True)
+
 
 
 #THIS MODEL IS THE ONE WHICH IS RESPONSIBLE  FOR TRACKING LEAVe DAYS
