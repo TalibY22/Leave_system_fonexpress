@@ -42,6 +42,10 @@ class Employee(models.Model):
       Email = models.EmailField(unique=True)
 
 
+#THIS MODEL IS THE ONE WHICH IS RESPONSIBLE  FOR TRACKING LEAVe DAYS
+
+#GET LEAVE_BALANCE  BALANCE WHERE USER = AND LEAVE TYPE IS 
+#BELOW IS A CORE MODEL IT WILL HANDLE ALL THE DAYS REMAINING ND ALL
 class leave_balancer(models.Model):
       employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
       leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)
@@ -71,6 +75,9 @@ class Leave(models.Model):
         return f"{self.user,self.leave_type}"
     
 
+
+
+#IF APPROVED  DEDUCT THE LEAVE DAYS
 class Aprroved_leave(models.Model):
       leaveid=models.ForeignKey(Leave,on_delete=models.CASCADE)
       approved_by = models.ForeignKey(User,on_delete=models.CASCADE)
