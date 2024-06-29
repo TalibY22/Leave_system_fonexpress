@@ -7,9 +7,11 @@ from django.contrib.auth import get_user
 
 class LeaveType(models.Model):
     leave_type = models.CharField(max_length=200)
+    Number_of_days  = models.IntegerField
     
     def __str__(self):
         return self.leave_type
+
 
 
 
@@ -38,6 +40,15 @@ class Employee(models.Model):
       First_Name = models.CharField(max_length=100)
       Last_name = models.CharField(max_length=100)
       Email = models.EmailField(unique=True)
+
+
+class leave_balancer(models.Model):
+      employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+      leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)
+      remaining_days = models.IntegerField()
+
+      def __str__(self) -> str:
+          return self.remaining_days
 
 class Leave(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key to User
