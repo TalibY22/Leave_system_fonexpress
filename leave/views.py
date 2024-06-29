@@ -23,9 +23,11 @@ def home(request):
          
          upcoming_leaves=Leave.objects.filter(start_date__gt=date.today()).count()
          rejected_leaves =Leave.objects.filter(status_id=3).count()
+         requests =Leave.objects.filter(status_id=1).count()
+
          employee_on_leave2 = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today()).count()
          employee_on_leave = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today())
-         return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2})
+         return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_request":requests})
     return render(request,"leave/home.html")
 
 @login_required
@@ -163,13 +165,15 @@ def leave_history(request,id):
     leaves = Leave.objects.filter(user_id=id,status_id=2 )
     Total_leaves = Leave.objects.filter(user_id=id,status_id=2).count()
     Sick_leaves = Leave.objects.filter(user_id=id,leave_type_id=1).count()
+    employee=User.objects.get(id=id)
+    username =employee.first_name
 
 
     if not leaves.exists():
-         return render(request, 'leave/admin/employee_history.html', {'success': True})
+         return render(request, 'leave/admin/employee_history.html', {'success': True,'employee':username})
          
 
-    return render(request, 'leave/admin/employee_history.html', {'leaves': leaves,'total_leaves':Total_leaves,'sick_leaves':Sick_leaves})
+    return render(request, 'leave/admin/employee_history.html', {'leaves': leaves,'total_leaves':Total_leaves,'sick_leaves':Sick_leaves,'employee':username})
 
 @login_required
 @user_passes_test(is_manager)

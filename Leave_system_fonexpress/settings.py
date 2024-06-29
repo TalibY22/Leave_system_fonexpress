@@ -142,3 +142,10 @@ EMAIL_HOST_USER = 'hzhzhhsj58@gmail.com'
 
 EMAIL_HOST_PASSWORD = 'lyog wdhy dzrv pvkk'  # R
 
+# settings.py
+
+LOGIN_URL = '/login'
+# settings.py
+
+LOGOUT_REDIRECT_URL = '/login'  # Redirect to login page after logout
+

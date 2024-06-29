@@ -59,3 +59,11 @@ class Leave(models.Model):
     def __str__(self):
         return f"{self.user,self.leave_type}"
     
+
+class Aprroved_leave(models.Model):
+      leaveid=models.ForeignKey(Leave,on_delete=models.CASCADE)
+      approved_by = models.ForeignKey(User,on_delete=models.CASCADE)
+      approved_date = models.DateField(auto_now_add=True)
+
+      def __str__(self) -> str:
+          return self.approved_date
