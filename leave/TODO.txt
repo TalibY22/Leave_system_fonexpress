@@ -18,12 +18,12 @@ Ajax requests =
 
 
 #User feedback 
-1 = leave dedacting 
+1 = leave dedacting  = done
 2 = leave add on leave should be added on 
 3 = attachment for types of leave 
 4 = omit public holidays from leave days 
 5 = ability to recall recall accompanied with reason 
-6 = a remainder to be sent about users who are about to go on leave   
+6 = a remainder to be sent about users who are about to go on leave = working on it
 7 = add filters sorting through data = add dropdowns 
 8 = rejection of if the days are over 
 9 = only 1.75 days can be taken for a paid leave in a month 

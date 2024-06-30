@@ -57,6 +57,7 @@ class Employee(models.Model):
 
 
       Email = models.EmailField(unique=True)
+      start_day = models.DateField(null=True)
 
       def save(self, *args, **kwargs):
           if not self.user:

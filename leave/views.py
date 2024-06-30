@@ -38,9 +38,12 @@ def apply_leave(request):
                 new_leave = form.save(commit=False)
                 new_leave.user = request.user
                 balance = leave_balancer.objects.get(employee__user=request.user, leave_type=new_leave.leave_type)
-                total_available_days = balance.remaining_days + balance.carry_forward_days
-                if new_leave.duration > total_available_days:
-                   error_message = f"Not enough leave balance. Available: {total_available_days}, Requested: {new_leave.duration}"
+                total_available_days = balance.remaining_days
+                duration = (new_leave.end_date - new_leave.start_date).days + 1
+               
+               
+                if duration > total_available_days:
+                   error_message = f"Not enough leave balance. Available: {total_available_days}, Requested: {duration}"
                    return render(request, 'leave/apply.html', {"form": form, "fail": error_message})
                 new_leave.save()
 
