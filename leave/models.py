@@ -60,22 +60,27 @@ class Employee(models.Model):
       start_day = models.DateField(null=True)
 
       def save(self, *args, **kwargs):
-          if not self.user:
+        if not self.user:
+            # Create a new User instance
             username = self.First_Name.lower()
-            password = "123456789Talib"
-            
-            
-              # Ensure you handle password securely in production
+            password = "123456789Talib"  # Ensure you handle password securely in production
+
+            # Create the user with the specified password
             self.user = User.objects.create_user(username=username, password=password)
-          super().save(*args, **kwargs)
-  
+        
+        # Save the employee instance before creating leave balances
+        super().save(*args, **kwargs)
+        
         # Create leave balances after saving employee
-          leave_types = LeaveType.objects.all()
-          for leave_type in leave_types:
-             leave_balancer.objects.create(employee_id=self, leave_type=leave_type, remaining_days=leave_type.Number_of_days)
-         
-
-
+        leave_types = LeaveType.objects.all()
+        for leave_type in leave_types:
+            leave_balancer.objects.get_or_create(employee=self, leave_type=leave_type, defaults={'remaining_days': leave_type.Number_of_days})
+      
+      def delete(self, *args, **kwargs):
+        if self.user:
+            self.user.delete()
+        super().delete(*args, **kwargs)
+          
       def __str__(self) -> str:
           return self.First_Name
 
@@ -85,10 +90,13 @@ class Employee(models.Model):
 #GET LEAVE_BALANCE  BALANCE WHERE USER = AND LEAVE TYPE IS 
 #BELOW IS A CORE MODEL IT WILL HANDLE ALL THE DAYS REMAINING ND ALL
 class leave_balancer(models.Model):
-      employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+      employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
       leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)
       remaining_days = models.IntegerField()
       carry_forward_days = models.IntegerField(default=0)
+
+      def __str__(self) -> str:
+        return f"{self.employee.First_Name} {self.leave_type.leave_type}"
 
       
 class Leave(models.Model):

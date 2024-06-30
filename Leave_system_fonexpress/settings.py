@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'leave-fdl.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,3 +150,25 @@ LOGIN_URL = '/login'
 
 LOGOUT_REDIRECT_URL = '/login'  # Redirect to login page after logout
 
+
+
+
+
+JAZZMIN_SETTINGS = {
+
+# title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Fx superadmin",
+
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "Leave",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "fx",
+
+    "copyright": "fonexpress Ltd",
+
+    "search_model": ["auth.User", "auth.Group","leave.employee","leave.leave_balancer"]
+
+
+
+}
