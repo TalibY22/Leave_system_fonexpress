@@ -100,7 +100,7 @@ class leave_balancer(models.Model):
 
       
 class Leave(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key to User
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)  # Foreign key to User
     leave_type = models.ForeignKey(LeaveType,on_delete=models.CASCADE)
     reason = models.CharField(max_length=255)
     start_date = models.DateField()
@@ -112,7 +112,7 @@ class Leave(models.Model):
     def save(self, *args, **kwargs):
         self.duration = (self.end_date - self.start_date).days + 1
         # Check leave balance
-        balance = leave_balancer.objects.get(employee__user=self.user, leave_type=self.leave_type)
+        balance = leave_balancer.objects.get(employee=self.employee, leave_type=self.leave_type)
         if self.duration > balance.remaining_days:
             raise ValueError(f"Not enough leave balance. Available: {balance.remaining_days}, Requested: {self.duration}")
         super().save(*args, **kwargs)
@@ -121,13 +121,18 @@ class Leave(models.Model):
     # ... Other business fields
 
     def __str__(self):
-        return f"{self.user,self.leave_type}"
+        return f"{self.employee,self.leave_type}"
     
 
 
 
 #IF APPROVED  DEDUCT THE LEAVE DAYS
-class Aprroved_leave(models.Model):
+class Approved_leave(models.Model):
+      
+      
+      
+      
+      
       leaveid=models.ForeignKey(Leave,on_delete=models.CASCADE)
       approved_by = models.ForeignKey(User,on_delete=models.CASCADE)
       approved_date = models.DateField(auto_now_add=True)
@@ -135,7 +140,7 @@ class Aprroved_leave(models.Model):
       def save(self, *args, **kwargs):
         # Deduct leave balance
         leave = self.leaveid
-        balance = leave_balancer.objects.get(employee__user=leave.user, leave_type=leave.leave_type)
+        balance = leave_balancer.objects.get(employee=leave.employee, leave_type=leave.leave_type)
         balance.remaining_days -= leave.duration
         balance.save()
         super().save(*args, **kwargs)

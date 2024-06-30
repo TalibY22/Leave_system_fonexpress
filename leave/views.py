@@ -1,7 +1,8 @@
 from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
+from django.db.models import Sum
 from .forms import LeaveForm,EmployeeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Leave,Status,Aprroved_leave,leave_balancer,Employee
+from .models import Leave,Status,leave_balancer,Employee,LeaveType,Approved_leave
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from .blah import send_email
@@ -36,7 +37,8 @@ def apply_leave(request):
             form = LeaveForm(request.POST)
             if form.is_valid():
                 new_leave = form.save(commit=False)
-                new_leave.user = request.user
+                employee = Employee.objects.get(user=request.user)
+                new_leave.employee = employee
                 balance = leave_balancer.objects.get(employee__user=request.user, leave_type=new_leave.leave_type)
                 total_available_days = balance.remaining_days
                 duration = (new_leave.end_date - new_leave.start_date).days + 1
@@ -133,9 +135,9 @@ def Accept_leave(request, id):
         accepted_status = Status.objects.get(status='Accepted')
         
         leave.status = accepted_status
-        email = leave.user.email
+       
         leave.save()
-        approved_leave = Aprroved_leave.objects.create(leaveid=leave, approved_by=request.user)
+        Approved_leave.objects.create(leaveid=leave, approved_by=request.user)
        
 
        
@@ -171,23 +173,47 @@ def active_leaves(request):
     return render(request, 'leave/admin/active_leaves.html', {'leaves': leaves_on_date})
 
 
+
+
+
+######
+#VIEW FOR SHOWING USER HISTORY
+######
 @login_required
 @user_passes_test(is_manager)
 #Make sure u retrieve data according to financial year
 def leave_history(request,id):
     
-    leaves = Leave.objects.filter(user_id=id,status_id=2 )
-    Total_leaves = Leave.objects.filter(user_id=id,status_id=2).count()
-    Sick_leaves = Leave.objects.filter(user_id=id,leave_type_id=1).count()
-    employee=User.objects.get(id=id)
-    username =employee.first_name
+    Total_off_days = Leave.objects.filter(employee_id=id,status_id=2).aggregate(total_days=Sum('duration'))['total_days']
 
+    employee = get_object_or_404(Employee, id=id)
+    username = employee.First_Name
+    
+    
+    approved_leaves = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    
+    
+    compulsory_days_remaining = leave_balancer.objects.filter(employee=id,leave_type=1)
+    
+    
+    
+    
+    
+    context = {
+        'employee': username,
+        'total_leaves': Total_off_days,
+        'compulsory_days':compulsory_days_remaining
+    }
 
-    if not leaves.exists():
+    
+    if Total_off_days < 1:
          return render(request, 'leave/admin/employee_history.html', {'success': True,'employee':username})
          
 
-    return render(request, 'leave/admin/employee_history.html', {'leaves': leaves,'total_leaves':Total_leaves,'sick_leaves':Sick_leaves,'employee':username})
+    
+    
+    return render(request, 'leave/admin/employee_history.html',context)
 
 @login_required
 @user_passes_test(is_manager)
