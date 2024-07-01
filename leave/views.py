@@ -186,28 +186,39 @@ def leave_history(request,id):
     
     Total_off_days = Leave.objects.filter(employee_id=id,status_id=2).aggregate(total_days=Sum('duration'))['total_days']
 
+    leaves_taken = Leave.objects.filter(employee_id=id)
     employee = get_object_or_404(Employee, id=id)
     username = employee.First_Name
     
     
-    approved_leaves = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-    compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    Total_off_days = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    general_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    
+    Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
+    compulsory_days_available = Leave_balance_compulsory.remaining_days
+
     
     
-    compulsory_days_remaining = leave_balancer.objects.filter(employee=id,leave_type=1)
+    
     
     
     
     
     
     context = {
+        'leaves':leaves_taken,
         'employee': username,
+        'sick_days_taken':sick_leaves_taken,
         'total_leaves': Total_off_days,
-        'compulsory_days':compulsory_days_remaining
+        'compulsory_days_available':compulsory_days_available,
+        'compulsory_days':compulsory_leave_days,
+        'general_days':general_leave_days
     }
 
     
-    if Total_off_days < 1:
+    if Total_off_days is None:
          return render(request, 'leave/admin/employee_history.html', {'success': True,'employee':username})
          
 

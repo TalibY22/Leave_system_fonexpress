@@ -145,6 +145,4 @@ class Approved_leave(models.Model):
         balance.save()
         super().save(*args, **kwargs)
       
-      
-      def __str__(self) -> str:
-          return self.approved_date
+     

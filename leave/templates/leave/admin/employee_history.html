@@ -10,7 +10,7 @@
         <div class="card text-white bg-danger">
           <div class="card-header">Total off days taken</div>
           <div class="card-body">
-            <h5 class="card-title">{{total_leaves}}</h5>
+            <h5 class="card-title">{{total_leaves}} days</h5>
           </div>
         </div>
       </div>
@@ -19,28 +19,49 @@
         <div class="card text-white bg-warning">
           <div class="card-header">Sick days taken</div>
           <div class="card-body">
-            <h5 class="card-title">1</h5>
+            <h5 class="card-title">{{sick_days_taken}} days</h5>
           </div>
         </div>
       </div>
   
       <div class="col-md-3 mb-3 "  style="max-width: 18rem;">
         <div class="card text-white bg-success">
-          <div class="card-header">Annual paid days remaining</div>
+          <div class="card-header">sick days remaining</div>
           <div class="card-body">
-            <h5 class="card-title">3</h5>
+            <h5 class="card-title">{{sick_days_remaining}} days</h5>
           </div>
         </div>
       </div>
   
       <div class="col-md-3 mb-3"  style="max-width: 18rem;">
         <div class="card text-white bg-primary">
-          <div class="card-header">Compulsory leave days remaining</div>
+          <div class="card-header">Annual days taken </div>
           <div class="card-body">
-            <h5 class="card-title">{{compulsory_days}}</h5>
+            <h5 class="card-title">{{compulsory_days}} days</h5>
           </div>
         </div>
       </div>
+
+
+
+      <div class="col-md-3 mb-3"  style="max-width: 18rem;">
+        <div class="card text-white bg-dark">
+          <div class="card-header">Annual leave days available</div>
+          <div class="card-body">
+            <h5 class="card-title">{{compulsory_days_available}} days</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3"  style="max-width: 18rem;">
+        <div class="card text-white bg-info">
+          <div class="card-header">General leave days taken</div>
+          <div class="card-body">
+            <h5 class="card-title">{{general_days}} days</h5>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -78,7 +99,7 @@
           <td>
             <a href="#"><button type="button" class="btn btn-danger me-1 btn-sm">Delete record<i class="fa-solid fa-pen-to-square"></i></button></a>
           </td>
-          <td>{{leave.user}}</td>
+          <td>{{leave.employee}}</td>
           <td>{{leave.leave_type}}</td>
           <td>{{leave.reason}}</td>
           <td>{{leave.duration}} days</td>
