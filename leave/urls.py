@@ -23,7 +23,7 @@ urlpatterns = [
    path("manager/rejected_leaves",views.view_rejected_leaves,name="rejected_leaves"),
    path("manager/active_leaves",views.active_leaves,name="active"),
    path("manager/employees",views.list_employees,name="employee"),
-   path("manager/search",views.search_employees,name="search"),
+   path("manager/search",views.simple_employee_search,name="search_employee"),
    
    
    

@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
 from django.db.models import Sum
+from django.db.models import Q
 from .forms import LeaveForm,EmployeeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Leave,Status,leave_balancer,Employee,LeaveType,Approved_leave
@@ -244,15 +245,15 @@ def list_employees(request):
 
 
 def simple_employee_search(request):
-    q = request.GET.get("query")
+    query = request.GET.get("query")
     results = []
     if query:
         results=Employee.objects.filter(
-          Q(First_Name__icointains=query) |
-          Q(Last_name__icointains=query)
+          Q(First_Name__icontains=query) |
+          Q(Last_name__icontains=query)
         
         )
-        return render(request,"step/admin/employee",{"employees":results}
+        return render(request,"leave/admin/employees.html",{"employees":results,"form":EmployeeForm()})
 
 
 
