@@ -28,7 +28,7 @@ Ajax requests =
 8 = rejection of if the days are over 
 9 = only 1.75 days can be taken for a paid leave in a month 
 10 = NOTIFICATION FOR EMPLOYEE WHO ARE ABOUT TO GO  FOR LEAVE = 
-
+11
 
 
 
