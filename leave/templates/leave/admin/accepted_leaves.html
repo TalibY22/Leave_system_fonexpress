@@ -1,125 +1,123 @@
-{%extends "leave/admin/admin_base.html"%}
-{%block body%}
+{% extends "leave/admin/admin_base.html" %}
+{% block body %}
 
-
-
-<div class="card border-primary mb-3">
-    <div class="card-header text-center">Upcoming/Accepted leaves</div>
-    <div class="card-body">
-      
-     
-   
-      
-
-
-      
-      
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Action</th>
-            <th scope="col">Employee</th>
-            <th scope="col">leave_type</th>
-            <th scope="col">reason</th>
-            <th scope="col">duration</th>
-            <th scope="col">start_date</th>
-            <th scope="col">end_date</th>
-            <th scope="col">Person covering</th>
-            <th scope="col">status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for leave in leaves %}
-          <tr class="table-primary">
-            <td>
-              
-              <form action="{%url 'delete' leave.id%}" method="post">
-                {%csrf_token%}
-                <button type="submit" class="btn-sm btn-danger">
-                Delete record<i class="fa-solid fa-trash-can fa-lg"></i>
-              </button></form>
-           
-              
-
-              
-        
-              
-            </td>
-            <td>{{leave.user}}</td>
-            <td>{{ leave.leave_type }}</td>
-            <td>{{ leave.reason }}</td>
-            <td>{{ leave.duration }}days</td>
-            <td>{{ leave.start_date }}</td>
-            <td>{{ leave.end_date }}</td>
-            <td>{{ leave.person_covering }}</td>
-            <td>{{ leave.status }}</td>
-
-          </tr>
-            </td>
-          </tr>
-
-
-
-
-
-            <!-- Delete Modal -->
-            <div class="modal" id="delete{{leave.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">
-                      Leave:{{leave.user}}{{leave.reason}}
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true"></span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to Reject this request</p>
-                  </div>
-                  <div class="modal-footer">
-                    <form action="{%url 'reject' leave.id%}" method="POST">
-                      {% csrf_token %}
-                      <input type="submit" class="btn btn-primary" value="Yes">
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
+<!-- Filters -->
+<div class="container-fluid bg-light mb-3">
+    <div class="card">
+        <div class="card-header">Filters</div>
+        <div class="card-body">
+            <form action="" method="post" class="row align-items-center justify-content-center">
+                {% csrf_token %}
+                
          
-    
-
-
-
-
-
-
-
-
-          {% endfor %}
-        </tbody>
-      </table>
+                
+                
+                <!-- Date Filter -->
+                <div class="col-md-2 pt-3">
+                    <div class="form-group">
+                        <input type="date" id="date" name="date" class="form-control" placeholder="Date">
+                    </div>
+                </div>
+                
+                <!-- Department Filter -->
+                <div class="col-md-2 pt-3">
+                    <div class="form-group">
+                        <select id="department" name="department" class="form-control">
+                            <option value="" selected>Department</option>
+                            <!-- Populate with departments dynamically if needed -->
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Branch Filter -->
+                <div class="col-md-2 pt-3">
+                    <div class="form-group">
+                        <select id="branch" name="branch" class="form-control">
+                            <option value="" selected>Branch</option>
+                            <!-- Populate with branches dynamically if needed -->
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Search Button -->
+                <div class="col-md-2 pt-2">
+                    <button type="submit" class="btn btn-primary btn-block">Search</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
+</div>
 
+<!-- Table of Leaves -->
+<div class="container-fluid">
+    <div class="card border-primary mb-3 mt-4">
+        <div class="card-header text-center">Upcoming/Accepted leaves</div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Leave Type</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Person Covering</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leave in leaves %}
+                    <tr class="table-primary">
+                        <td>
+                            <form action="{% url 'delete' leave.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-sm btn-danger">
+                                    Delete record <i class="fa-solid fa-trash-can fa-lg"></i>
+                                </button>
+                            </form>
+                        </td>
+                        <td>{{ leave.user }}</td>
+                        <td>{{ leave.leave_type }}</td>
+                        <td>{{ leave.reason }}</td>
+                        <td>{{ leave.duration }} days</td>
+                        <td>{{ leave.start_date }}</td>
+                        <td>{{ leave.end_date }}</td>
+                        <td>{{ leave.person_covering }}</td>
+                        <td>{{ leave.status }}</td>
+                    </tr>
 
+                    <!-- Delete Modal -->
+                    <div class="modal" id="delete{{ leave.id }}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        Leave: {{ leave.user }} - {{ leave.reason }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to reject this request?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="{% url 'reject' leave.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-primary" value="Yes">
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{%endblock%}
-
+{% endblock %}

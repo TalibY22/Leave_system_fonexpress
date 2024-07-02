@@ -24,10 +24,10 @@ Ajax requests =
 4 = omit public holidays from leave days 
 5 = ability to recall recall accompanied with reason 
 6 = a remainder to be sent about users who are about to go on leave = working on it
-7 = add filters sorting through data = add dropdowns 
+7 = add filters sorting through data = DONE 
 8 = rejection of if the days are over 
 9 = only 1.75 days can be taken for a paid leave in a month 
-10 = 
+10 = NOTIFICATION FOR EMPLOYEE WHO ARE ABOUT TO GO  FOR LEAVE = 
 
 
 

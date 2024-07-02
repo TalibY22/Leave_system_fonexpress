@@ -77,6 +77,9 @@ def user_leaves(request):
 @user_passes_test(is_manager)
 def view_all_leaves(request):
      
+   
+       
+
      
      
      leaves = Leave.objects.filter(status_id=1)
@@ -88,7 +91,33 @@ def view_all_leaves(request):
 
 
 def view_accepted_leaves(request):
+      
+      #CODE NEEDS TO BE REWRITTEN
+     if request.method=='POST':
+        
+      
+        date = request.POST.get('date')
+        department_id = request.POST.get('department')
+        branch_id = request.POST.get('branch')
+        
+        # Use the filters if they are provided
+        filters = {}
+        if date:
+            filters['start_day'] = date
+        if department_id:
+            filters['department_id'] = department_id
+        if branch_id:
+            filters['branch_id'] = branch_id
+        
+        # Apply filters to your queryset
+        results = Employee.objects.filter(**filters)
+        return render(request,'leave/admin/accepted_leaves.html',{"leaves":results})
+     
+     
+     
      leaves = Leave.objects.filter(status_id=2)
+
+
 
      return render(request,'leave/admin/accepted_leaves.html',{"leaves":leaves})
 

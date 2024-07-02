@@ -1,6 +1,48 @@
 {%extends "leave/admin/admin_base.html"%}
 {%block body%}
 
+<div class="container-fluid bg-light mb-3">
+  <div class="card">
+      <div class="card-header">Filters</div>
+      <div class="card-body">
+          <form action="" method="post" class="row align-items-center justify-content-center">
+              {% csrf_token %}
+              
+            
+              
+              
+              <!-- Department Filter -->
+              <div class="col-md-2 pt-3">
+                  <div class="form-group">
+                      <select id="department" name="department" class="form-control">
+                          <option value="" selected>Department</option>
+                          <!-- Populate with departments dynamically if needed -->
+                      </select>
+                  </div>
+              </div>
+              
+              <!-- Branch Filter -->
+              <div class="col-md-2 pt-3">
+                  <div class="form-group">
+                      <select id="branch" name="branch" class="form-control">
+                          <option value="" selected>Branch</option>
+                          <!-- Populate with branches dynamically if needed -->
+                      </select>
+                  </div>
+              </div>
+              
+              <!-- Search Button -->
+              <div class="col-md-2 pt-3">
+                  <button type="submit" class="btn btn-primary btn-block">Search</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+
+
+
 
 
 <div class="card border-primary mb-3">
