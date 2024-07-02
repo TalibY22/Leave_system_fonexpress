@@ -243,6 +243,20 @@ def list_employees(request):
     return render(request, 'leave/admin/employees.html',{'employees':user,'form':EmployeeForm()})
 
 
+def simple_employee_search(request):
+    q = request.GET.get("query")
+    results = []
+    if query:
+        results=Employee.objects.filter(
+          Q(First_Name__icointains=query) |
+          Q(Last_name__icointains=query)
+        
+        )
+        return render(request,"step/admin/employee",{"employees":results}
+
+
+
+
 
 @login_required
 @user_passes_test(is_manager)
