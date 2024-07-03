@@ -67,6 +67,7 @@
             <th scope="col">Person covering</th>
             
             <th scope="col">status</th>
+            <th scope="col">Document</th>
           </tr>
         </thead>
         <tbody>
@@ -93,6 +94,17 @@
             <td>{{ leave.end_date }}</td>
             <td>{{ leave.person_covering }}</td>
             <td>{{ leave.status }}</td>
+            
+            <td>
+              {% if leave.image %}
+                  <a href="{{ leave.image.url }}" target="_blank">
+                      <img src="{{ leave.image.url }}" class="img-responsive" style="width: 42px;" />
+                  </a>
+              {% else %}
+                  No image available
+              {% endif %}
+          </td>
+          
 
           </tr>
             </td>

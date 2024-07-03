@@ -153,7 +153,7 @@ def reject_leave(request, id):
 
         rejected_status = Status.objects.get(status='Rejected')
         leave.status = rejected_status
-        email = leave.user.email
+        
         leave.save()
         
         subject = "Leave Rejected"
