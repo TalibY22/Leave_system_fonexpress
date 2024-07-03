@@ -174,7 +174,8 @@ JAZZMIN_SETTINGS = {
 }
 
 
-MEDIA_URL = '/media/'  
+
   
 # Path where media is stored  
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'  

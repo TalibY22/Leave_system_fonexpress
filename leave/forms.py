@@ -4,8 +4,8 @@ from.models import Leave,LeaveType,Status,Employee
 class LeaveForm(forms.ModelForm):
     class Meta:
         model = Leave
-        fields = ['leave_type','reason','start_date','end_date','person_covering']
-        
+        fields = ['leave_type','reason','start_date','end_date','person_covering','image']
+        image = forms.ImageField()
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
