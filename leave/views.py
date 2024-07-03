@@ -3,7 +3,7 @@ from django.db.models import Sum
 from django.db.models import Q
 from .forms import LeaveForm,EmployeeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Leave,Status,leave_balancer,Employee,LeaveType,Approved_leave
+from .models import Leave,Status,leave_balancer,Employee,LeaveType,Approved_leave,Department,Branch
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from .blah import send_email
@@ -91,6 +91,9 @@ def view_all_leaves(request):
 
 
 def view_accepted_leaves(request):
+     leaves = Leave.objects.filter(status_id=2)
+     departments = Department.objects.all()
+     branches = Branch.objects.all()
       
       #CODE NEEDS TO BE REWRITTEN
      if request.method=='POST':
@@ -101,25 +104,29 @@ def view_accepted_leaves(request):
         branch_id = request.POST.get('branch')
         
         # Use the filters if they are provided
-        filters = {}
+        query = Q()
+
+    # Conditionally add filters to the Q object
         if date:
-            filters['start_day'] = date
+         query &= Q(start_date=date)
         if department_id:
-            filters['department_id'] = department_id
+         query &= Q(employee__department__name=department_id)
         if branch_id:
-            filters['branch_id'] = branch_id
-        
-        # Apply filters to your queryset
-        results = Employee.objects.filter(**filters)
-        return render(request,'leave/admin/accepted_leaves.html',{"leaves":results})
+         query &= Q(employee__branch__name=branch_id)
+
+    # Apply the Q object to your queryset
+        leaves = Leave.objects.filter(query)
+        print(leaves)
+        return render(request,'leave/admin/accepted_leaves.html',{"leaves":leaves,"departments":departments,"branches":branches})
      
      
      
-     leaves = Leave.objects.filter(status_id=2)
+     
+
+    
 
 
-
-     return render(request,'leave/admin/accepted_leaves.html',{"leaves":leaves})
+     return render(request,'leave/admin/accepted_leaves.html',{"leaves":leaves,"departments":departments,"branches":branches})
 
 def view_rejected_leaves(request):
      leaves = Leave.objects.filter(status_id=3)

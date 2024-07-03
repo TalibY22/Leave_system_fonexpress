@@ -24,6 +24,9 @@
                     <div class="form-group">
                         <select id="department" name="department" class="form-control">
                             <option value="" selected>Department</option>
+                            {%for department in departments%}
+                            <option value="{{department}}" selected>{{department}}</option>
+                            {%endfor%}
                             <!-- Populate with departments dynamically if needed -->
                         </select>
                     </div>
@@ -34,6 +37,9 @@
                     <div class="form-group">
                         <select id="branch" name="branch" class="form-control">
                             <option value="" selected>Branch</option>
+                            {%for branch in branches %}
+                            <option value="{{branch}}" selected>{{branch}}</option>
+                            {%endfor%}
                             <!-- Populate with branches dynamically if needed -->
                         </select>
                     </div>
@@ -78,7 +84,7 @@
                                 </button>
                             </form>
                         </td>
-                        <td>{{ leave.user }}</td>
+                        <td>{{ leave.employee }}</td>
                         <td>{{ leave.leave_type }}</td>
                         <td>{{ leave.reason }}</td>
                         <td>{{ leave.duration }} days</td>

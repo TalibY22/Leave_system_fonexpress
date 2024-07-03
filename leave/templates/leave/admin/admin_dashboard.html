@@ -115,22 +115,36 @@
   
             
              </div>
-             <div class="col-md-4">
-                <div class="card bg-light mb-3">
-                    <div class="card-header text-center">Employees on Leave Today</div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            
-                           {%for i in leaves %}
-                          
-                            <li class="list-group-item list-group-item-danger">{{i.user}}</li>
-                           
-                            
-                            {%endfor%}
-                            
-                          </ul>
-                    </div><!--//card-body-->
-                </div><!--//card-->
+             <div class="container-fluid">
+                <div class="row">
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header text-center">Employees on Leave Today</div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for i in leaves %}
+                                    <li class="list-group-item list-group-item-danger">{{ i.employee }} {{ i.end_date }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header text-center">Employees on Leave Today</div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for i in leaves %}
+                                    <li class="list-group-item list-group-item-danger">{{ i.employee }} {{ i.end_date }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
            
