@@ -7,6 +7,8 @@ from .models import Leave,Status,leave_balancer,Employee,LeaveType,Approved_leav
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from .blah import send_email
+from datetime import datetime, timedelta
+from django.utils import timezone
 from concurrent.futures import ThreadPoolExecutor
 from django.http import JsonResponse
 
@@ -23,12 +25,15 @@ def home(request):
     if is_manager(user=request.user):
          
          
+         
          upcoming_leaves=Leave.objects.filter(start_date__gt=date.today()).count()
          rejected_leaves =Leave.objects.filter(status_id=3).count()
          requests =Leave.objects.filter(status_id=1).count()
 
          employee_on_leave2 = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today()).count()
          employee_on_leave = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today())
+         
+
          return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_request":requests})
     return render(request,"leave/home.html")
 

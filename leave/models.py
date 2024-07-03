@@ -108,6 +108,7 @@ class Leave(models.Model):
     person_covering = models.CharField(max_length=255)
     status = models.ForeignKey(Status,on_delete=models.CASCADE,default=1)
     duration=models.IntegerField()
+    image=models.ImageField(null=True,upload_to='images/')
      
     def save(self, *args, **kwargs):
         self.duration = (self.end_date - self.start_date).days + 1
