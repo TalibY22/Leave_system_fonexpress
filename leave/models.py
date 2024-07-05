@@ -102,7 +102,7 @@ class leave_balancer(models.Model):
         return f"{self.employee.First_Name} {self.leave_type.name}"
 
       
-#Contradiction between save and model leading delete to not work 
+
 class Leave(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)  # Foreign key to User
     leave_type = models.ForeignKey(LeaveType,on_delete=models.CASCADE)

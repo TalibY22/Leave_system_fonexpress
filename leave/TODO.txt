@@ -1,14 +1,17 @@
 #Things to do 
 
 A way to show days till he returns = 
-Reason should be provide when rejecting a leave = 
+Reason should be provide when rejecting a leave = done
 A way to print leave record for employees = 
-Implement  a way to check Avaliable paid leaves for a employee = dependant
-Add a table for completed leaves to check when a employee come back from a leave  = 
-Automatic changing of status of leaves = 
-users to be able to view their leave requests = 
-Enable users to be created with the employee form = 
+Implement  a way to check Avaliable paid leaves for a employee = done
+Add a table for completed leaves to check when a employee come back from a leave  = NOT gonna be implemnted
+Automatic changing of status of leaves = done
+users to be able to view their leave requests = done
+Enable users to be created with the employee form = done
 Ajax requests = 
+stop using hardcoded ids = 
+Implement celery = why = to handle email sending avoids bottleneck 
+
 
 
 
@@ -20,15 +23,16 @@ Ajax requests =
 #User feedback 
 1 = leave dedacting  = done
 2 = leave add on leave should be added on 
-3 = attachment for types of leave = half done
-4 = omit public holidays from leave days 
-5 = ability to recall recall accompanied with reason 
+3 = attachment for types of leave = done
+4 = omit public holidays from leave days = omited sundays
+5 = ability to recall recall accompanied with reason = not implementing
 6 = a remainder to be sent about users who are about to go on leave = working on it
 7 = add filters sorting through data = DONE 
-8 = rejection of if the days are over 
-9 = only 1.75 days can be taken for a paid leave in a month 
-10 = NOTIFICATION FOR EMPLOYEE WHO ARE ABOUT TO GO  FOR LEAVE = 
-11
+8 = rejection of if the days are over = implemneted
+9 = only 1.75 days can be taken for a paid leave in a month = will show on frontend 
+10 = NOTIFICATION FOR EMPLOYEE WHO ARE ABOUT TO GO  FOR LEAVE = shall work on it 
+11 = add filter to use history 
+12 = 
 
 
 

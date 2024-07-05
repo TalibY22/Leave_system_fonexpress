@@ -42,7 +42,7 @@ def home(request):
     else:
        
        employee = get_object_or_404(Employee, user=request.user)
-       leaves_taken = Leave.objects.filter(employee=employee).count()
+       leaves_taken = Leave.objects.filter(employee=employee,status_id=2).count()
        
     
     
