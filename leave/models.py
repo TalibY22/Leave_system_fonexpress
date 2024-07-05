@@ -6,11 +6,11 @@ from django.contrib.auth import get_user
 # Create your models here.
 
 class LeaveType(models.Model):
-    leave_type = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
     Number_of_days  = models.IntegerField()
     
     def __str__(self):
-        return self.leave_type
+        return self.name
 
 
 
@@ -39,7 +39,7 @@ class Branch(models.Model):
      location = models.CharField(max_length=255)
 
      def __str__(self) -> str:
-         return self.location
+         return self.name
 
 
 
@@ -57,7 +57,7 @@ class Employee(models.Model):
 
 
       Email = models.EmailField(unique=True)
-      start_day = models.DateField(null=True)
+      date_joined = models.DateField(null=True)
 
       def save(self, *args, **kwargs):
         if not self.user:
@@ -96,7 +96,7 @@ class leave_balancer(models.Model):
       carry_forward_days = models.IntegerField(default=0)
 
       def __str__(self) -> str:
-        return f"{self.employee.First_Name} {self.leave_type.leave_type}"
+        return f"{self.employee.First_Name} {self.leave_type.name}"
 
       
 class Leave(models.Model):
@@ -112,11 +112,22 @@ class Leave(models.Model):
      
     def save(self, *args, **kwargs):
         self.duration = (self.end_date - self.start_date).days + 1
-        # Check leave balance
+        
         balance = leave_balancer.objects.get(employee=self.employee, leave_type=self.leave_type)
         if self.duration > balance.remaining_days:
             raise ValueError(f"Not enough leave balance. Available: {balance.remaining_days}, Requested: {self.duration}")
         super().save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        #
+        if self.status_id == 2:
+            try:
+                balance = leave_balancer.objects.get(employee=self.employee, leave_type=self.leave_type)
+                balance.remaining_days += self.duration
+                balance.save()
+            except leave_balancer.DoesNotExist:
+                raise ValueError("Leave balance record does not exist for this employee and leave type.")
+        super().delete(*args, **kwargs)
+
 
 
     # ... Other business fields

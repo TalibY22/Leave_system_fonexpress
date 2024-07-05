@@ -239,30 +239,34 @@ def leave_history(request,id):
     general_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     
     Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
+    sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
+    
     compulsory_days_available = Leave_balance_compulsory.remaining_days
-
+    sick_days_available = sick_balance.remaining_days
     
     
-    
+    success = False
+    if Total_off_days is None:
+        success = True 
     
     
     
     
     
     context = {
+        'compulsory_days_available':compulsory_days_available,
         'leaves':leaves_taken,
         'employee': username,
         'sick_days_taken':sick_leaves_taken,
         'total_leaves': Total_off_days,
-        'compulsory_days_available':compulsory_days_available,
+        'success':success,
+        'sick_days_remaining':sick_days_available,
         'compulsory_days':compulsory_leave_days,
         'general_days':general_leave_days
     }
 
     
-    if Total_off_days is None:
-         return render(request, 'leave/admin/employee_history.html', {'success': True,'employee':username})
-         
+  
 
     
     
