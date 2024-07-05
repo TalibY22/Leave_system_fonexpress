@@ -2,6 +2,9 @@ from typing import Any, Iterable
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
+from datetime import timedelta
+
+import os
 
 # Create your models here.
 
@@ -99,6 +102,7 @@ class leave_balancer(models.Model):
         return f"{self.employee.First_Name} {self.leave_type.name}"
 
       
+#Contradiction between save and model leading delete to not work 
 class Leave(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)  # Foreign key to User
     leave_type = models.ForeignKey(LeaveType,on_delete=models.CASCADE)
@@ -111,14 +115,31 @@ class Leave(models.Model):
     image=models.ImageField(upload_to='images/',null=True,blank=True)
      
     def save(self, *args, **kwargs):
-        self.duration = (self.end_date - self.start_date).days + 1
+        self.duration = self.calculate_duration_excluding_sundays(self.start_date,self.end_date)
+
         
         balance = leave_balancer.objects.get(employee=self.employee, leave_type=self.leave_type)
         if self.duration > balance.remaining_days:
             raise ValueError(f"Not enough leave balance. Available: {balance.remaining_days}, Requested: {self.duration}")
         super().save(*args, **kwargs)
+    
+    @staticmethod
+    def calculate_duration_excluding_sundays(start_date, end_date):
+        delta = end_date - start_date
+        total_days = delta.days + 1  
+        sundays = sum(1 for day in range(total_days) if (start_date + timedelta(days=day)).weekday() == 6)
+        return total_days - sundays
+    
+    
+    
     def delete(self, *args, **kwargs):
-        #
+        
+        if self.image:
+            if os.path.isfile(self.image.path):
+                os.remove(self.image.path)
+        
+        
+        
         if self.status_id == 2:
             try:
                 balance = leave_balancer.objects.get(employee=self.employee, leave_type=self.leave_type)

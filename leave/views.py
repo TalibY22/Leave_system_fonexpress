@@ -34,16 +34,59 @@ def home(request):
          employee_on_leave = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today())
          
 
+         
+         
+         
+     
          return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_request":requests})
-    return render(request,"leave/home.html")
+    else:
+       
+       employee = get_object_or_404(Employee, user=request.user)
+       leaves_taken = Leave.objects.filter(employee=employee).count()
+       
+    
+    
+       Total_off_days = Approved_leave.objects.filter(leaveid__employee=employee).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       
+       general_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    
+       Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
+       sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
+    
+       compulsory_days_available = Leave_balance_compulsory.remaining_days
+       sick_days_available = sick_balance.remaining_days
+    
+    
+    
+    
+    
+    
+    
+       context = {
+        'offdays':leaves_taken,
+        'paid_leave':compulsory_days_available,
+        'sick_days':sick_leaves_taken,
+        'paid_leaves_taken':compulsory_leave_days,
+
+        
+       }
+
+    
+
+         
+
+       return render(request,"leave/home.html",context)
 
 @login_required
 def apply_leave(request):
+        employee = Employee.objects.get(user=request.user)
         if request.method=='POST':
             form = LeaveForm(request.POST,request.FILES)
             if form.is_valid():
                 new_leave = form.save(commit=False)
-                employee = Employee.objects.get(user=request.user)
+               
                 new_leave.employee = employee
                 balance = leave_balancer.objects.get(employee__user=request.user, leave_type=new_leave.leave_type)
                 total_available_days = balance.remaining_days
@@ -65,12 +108,22 @@ def apply_leave(request):
 
                 
                 return render(request,'leave/apply.html',{"form":LeaveForm(),"success":True})
-        return render(request,'leave/apply.html',{"form":LeaveForm})    
+        
+        
+        Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
+        sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
+    
+        compulsory_days_available = Leave_balance_compulsory.remaining_days
+        sick_days_available = sick_balance.remaining_days
+        
+        
+        return render(request,'leave/apply.html',{"form":LeaveForm,"available_annual_leave":compulsory_days_available,"available_sick_leave":sick_days_available})    
 
 
 @login_required
 def user_leaves(request):
-     leaves =Leave.objects.filter(user=request.user)
+     employee = get_object_or_404(Employee, user=request.user)
+     leaves =Leave.objects.filter(employee=employee)
 
      return render(request,'leave/leave_history.html',{"leaves":leaves})
 

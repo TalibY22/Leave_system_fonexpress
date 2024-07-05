@@ -3,12 +3,42 @@
 {%block body%}
 
 
+
 {%if success%}
 <div class="alert alert-dismissible alert-success">Ur leave request has been sent kindly check for feedback<a href="">Go to homepage</a> </div>
 {%endif%}
 {%if fail%}
 <div class="alert alert-dismissible alert-danger">{{fail}}<a href="">Go to homepage</a> </div>
 {%endif%}
+
+
+
+<div class="container justify-content-center">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card border-primary mb-3">
+          <div class="card-header bg-primary">Available annual leave</div>
+          <div class="card-body text-primary">
+            <h5 class="card-title">{{available_annual_leave}}</h5>
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-secondary mb-3">
+          <div class="card-header bg-success">Available sick days </div>
+          <div class="card-body text-secondary">
+            <h5 class="card-title">{{available_sick_leave}}</h5>
+           
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+
 
 
 
