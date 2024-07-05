@@ -104,7 +104,7 @@ class leave_balancer(models.Model):
       
 
 class Leave(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)  # Foreign key to User
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)  
     leave_type = models.ForeignKey(LeaveType,on_delete=models.CASCADE)
     reason = models.CharField(max_length=255)
     start_date = models.DateField()
@@ -133,14 +133,16 @@ class Leave(models.Model):
     
     
     def delete(self, *args, **kwargs):
-        
+        print("test1 pass")
         if self.image:
+
             if os.path.isfile(self.image.path):
                 os.remove(self.image.path)
         
         
         
         if self.status_id == 2:
+            print("test2 pass")
             try:
                 balance = leave_balancer.objects.get(employee=self.employee, leave_type=self.leave_type)
                 balance.remaining_days += self.duration

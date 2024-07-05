@@ -15,7 +15,7 @@ from django.http import JsonResponse
 
 from datetime import date 
 
-
+#Test to dtermine if user is a manager or not !!!!Very important entire security relies on this code 
 def is_manager(user):
     return user.groups.filter(name='Manager').exists()
 
@@ -147,7 +147,8 @@ def view_all_leaves(request):
 
 
 
-
+@login_required
+@user_passes_test(is_manager)
 def view_accepted_leaves(request):
      leaves = Leave.objects.filter(status_id=2)
      departments = Department.objects.all()
@@ -186,6 +187,9 @@ def view_accepted_leaves(request):
 
      return render(request,'leave/admin/accepted_leaves.html',{"leaves":leaves,"departments":departments,"branches":branches})
 
+
+@login_required
+@user_passes_test(is_manager)
 def view_rejected_leaves(request):
      leaves = Leave.objects.filter(status_id=3)
 
@@ -197,6 +201,7 @@ def view_rejected_leaves(request):
 
 
 @login_required
+@user_passes_test(is_manager)
 def reject_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
 
@@ -221,7 +226,8 @@ def reject_leave(request, id):
         return redirect('view_all_leaves')  
 
 @login_required
-#MY SEXY FUTURE SELF MAKE SURE U ADD CODE TO SUBTRACT DAYS IF ITS PAID LEAVE 
+#MY SEXY FUTURE SELF MAKE SURE U ADD CODE TO SUBTRACT DAYS IF ITS PAID LEAVE
+@user_passes_test(is_manager) 
 def Accept_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
 
@@ -342,6 +348,10 @@ def list_employees(request):
     return render(request, 'leave/admin/employees.html',{'employees':user,'form':EmployeeForm()})
 
 
+
+
+@login_required
+@user_passes_test(is_manager)
 def simple_employee_search(request):
     query = request.GET.get("query")
     results = []
