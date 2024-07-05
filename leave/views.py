@@ -40,7 +40,7 @@ def home(request):
 @login_required
 def apply_leave(request):
         if request.method=='POST':
-            form = LeaveForm(request.POST)
+            form = LeaveForm(request.POST,request.FILES)
             if form.is_valid():
                 new_leave = form.save(commit=False)
                 employee = Employee.objects.get(user=request.user)
