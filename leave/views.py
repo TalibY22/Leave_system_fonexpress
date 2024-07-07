@@ -98,6 +98,7 @@ def apply_leave(request):
                    return render(request, 'leave/apply.html', {"form": form, "fail": error_message})
                 new_leave.save()
 
+                #The code below  needs to be optimised will cause bottlenecks in production
                 send_mail(
            "A new leave request has been made ",
              " A leave request has been made",
@@ -134,15 +135,41 @@ def user_leaves(request):
 @login_required
 @user_passes_test(is_manager)
 def view_all_leaves(request):
-     
-   
+     departments = Department.objects.all()
+     branches = Branch.objects.all()
+      
+      #CODE NEEDS TO BE REWRITTEN
+     if request.method=='POST':
+        
+      
+       
+        department_id = request.POST.get('department')
+        branch_id = request.POST.get('branch')
+        
+        # Use the filters if they are provided
+        query = Q()
+
+    
+       
+        if department_id:
+         query &= Q(employee__department__name=department_id)
+        if branch_id:
+         query &= Q(employee__branch__name=branch_id)
+
+
+        leaves = Leave.objects.filter(query)
+        print(leaves)
+        return render(request,'leave/admin/view_all_leaves.html',{"leaves":leaves,"departments":departments,"branches":branches})
+      
+    
        
 
      
      
      leaves = Leave.objects.filter(status_id=1)
 
-     return render(request,'leave/admin/view_all_leaves.html',{"leaves":leaves})
+     return render(request,'leave/admin/view_all_leaves.html',{"leaves":leaves,"departments":departments,"branches":branches})
+      
 
 
 
