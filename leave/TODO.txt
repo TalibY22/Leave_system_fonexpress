@@ -31,8 +31,8 @@ Implement celery = why = to handle email sending avoids bottleneck
 8 = rejection of if the days are over = implemneted
 9 = only 1.75 days can be taken for a paid leave in a month = will show on frontend 
 10 = NOTIFICATION FOR EMPLOYEE WHO ARE ABOUT TO GO  FOR LEAVE = shall work on it 
-11 = add filter to use history 
-12 = 
+11 = add filter to use history = source code is there just needs to be implemnted 
+12 = add static files = 
 
 
 

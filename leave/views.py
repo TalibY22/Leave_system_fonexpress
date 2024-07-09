@@ -411,8 +411,8 @@ def search_employees(request):
 @user_passes_test(is_manager)
 def Delete_leave_record(request,id):
      if request.method =='POST':
-          record = Leave.objects.filter(id=id)
+          record = Leave.objects.get(id=id)
           record.delete()
 
-          return redirect('rejected_leaves')
+          return redirect('view_all_leaves')
 
