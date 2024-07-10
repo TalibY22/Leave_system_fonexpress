@@ -14,5 +14,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class BalancerSerializer(serializers.HyperlinkedModelSerializer):
-    model = leave_balancer
-    fields = ['leave_type','remaining_days','carry_forward_days']
+    
+    class Meta:
+     model = leave_balancer
+    
+     fields = ['leave_type','remaining_days','carry_forward_days']
