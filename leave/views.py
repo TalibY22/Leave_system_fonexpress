@@ -38,7 +38,7 @@ def home(request):
          
          
      
-         return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_request":requests})
+         return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_requests":requests})
     else:
        
        employee = get_object_or_404(Employee, user=request.user)
@@ -414,5 +414,5 @@ def Delete_leave_record(request,id):
           record = Leave.objects.get(id=id)
           record.delete()
 
-          return redirect('view_all_leaves')
+          return redirect('accepted_leaves')
 
