@@ -1,4 +1,4 @@
-from leave.models import Leave,Approved_leave,leave_balancer
+from leave.models import Leave,Approved_leave,leave_balancer,LeaveType
 from rest_framework import serializers
 from django.contrib.auth.models import Group, User
 
@@ -13,6 +13,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'username', 'email', 'groups']
 
 
-class BalancerSerializer(serializers.HyperlinkedModelSerializer):
-    model = leave_balancer
-    fields = ['leave_type','remaining_days','carry_forward_days']
+class BalancerSerializer(serializers.ModelSerializer):
+    leave_type = serializers.PrimaryKeyRelatedField(queryset=LeaveType.objects.all())
+    class Meta:
+     model = leave_balancer
+    
+     fields = ['leave_type','remaining_days','carry_forward_days']

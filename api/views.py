@@ -1,7 +1,7 @@
 
 
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from leave.models import Leave,Employee,leave_balancer
@@ -18,6 +18,10 @@ def Leave_history(request,employee_id):
 
 @api_view(['GET'])
 def leave_days(request,employeeid):
-       leave = leave_balancer.objects.filter(employee__id=employeeid)
-       serialiser = BalancerSerializer(leave,many=True)
+       employee = get_object_or_404(Employee, id=employeeid)
+       serializer_context = {
+            'request': request,
+        }
+       leave = leave_balancer.objects.filter(employee=employee)
+       serialiser = BalancerSerializer(leave,many=True,context=serializer_context)
        return Response(serialiser.data)
