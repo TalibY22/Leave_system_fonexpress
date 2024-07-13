@@ -11,15 +11,22 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from concurrent.futures import ThreadPoolExecutor
 from django.http import JsonResponse
-
-
+from apscheduler.schedulers.background import BackgroundScheduler
+import time
+import threading
 from datetime import date 
+
+from .tasks import start_schedule
+
+#SCHEDULING OF TASKS 
+
 
 #Test to dtermine if user is a manager or not !!!!Very important entire security relies on this code 
 def is_manager(user):
     return user.groups.filter(name='Manager').exists()
 
 # Create your views here.
+#todo get nav from db
 @login_required
 def home(request):
     if is_manager(user=request.user):
@@ -84,6 +91,7 @@ def home(request):
 
        return render(request,"leave/home.html",context)
 
+
 @login_required
 def apply_leave(request):
         employee = Employee.objects.get(user=request.user)
@@ -104,14 +112,7 @@ def apply_leave(request):
                 new_leave.save()
 
                 #The code below  needs to be optimised will cause bottlenecks in production
-                send_mail(
-           "A new leave request has been made ",
-             " A leave request has been made",
-            "foneexpress@gmail.com",
-            ["yakubtalib70@gmail.com"],
-            fail_silently=False,
-          )
-
+                s 
                 
                 return render(request,'leave/apply.html',{"form":LeaveForm(),"success":True})
         
@@ -275,7 +276,7 @@ def Accept_leave(request, id):
 
        
        
-       
+       #    This code is gonna be a bootleneck 
         send_mail(
            "Leave accepted",
            "U may proceed to have a leave on the date specified",
