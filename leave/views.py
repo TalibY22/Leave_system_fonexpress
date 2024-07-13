@@ -21,6 +21,7 @@ from .tasks import start_schedule
 #SCHEDULING OF TASKS 
 
 
+
 #Test to dtermine if user is a manager or not !!!!Very important entire security relies on this code 
 def is_manager(user):
     return user.groups.filter(name='Manager').exists()
@@ -33,7 +34,7 @@ def home(request):
          
          
          
-         upcoming_leaves=Leave.objects.filter(start_date__gt=date.today()).count()
+         upcoming_leaves=Leave.objects.filter(start_date__gt=date.today(),status_id=2).count()
          rejected_leaves =Leave.objects.filter(status_id=3).count()
          requests =Leave.objects.filter(status_id=1).count()
 
@@ -112,7 +113,13 @@ def apply_leave(request):
                 new_leave.save()
 
                 #The code below  needs to be optimised will cause bottlenecks in production
-                s 
+                send_mail(
+           "Leave request has been made  ",
+             " A leave request has been made",
+            "foneexpress@gmail.com",
+            ["yakubtalib70@gmail.com"],
+            fail_silently=False,
+          )
                 
                 return render(request,'leave/apply.html',{"form":LeaveForm(),"success":True})
         
@@ -163,7 +170,7 @@ def view_all_leaves(request):
          query &= Q(employee__branch__name=branch_id)
 
 
-        leaves = Leave.objects.filter(query)
+        leaves = Leave.objects.filter(query,status_id=1)
         print(leaves)
         return render(request,'leave/admin/view_all_leaves.html',{"leaves":leaves,"departments":departments,"branches":branches})
       
@@ -196,7 +203,7 @@ def view_accepted_leaves(request):
         branch_id = request.POST.get('branch')
         
         # Use the filters if they are provided
-        query = Q()
+        query = Q(status_id=2)
 
     # Conditionally add filters to the Q object
         if date:
