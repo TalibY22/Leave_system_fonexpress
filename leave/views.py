@@ -42,10 +42,15 @@ def home(request):
     else:
        
        employee = get_object_or_404(Employee, user=request.user)
+       #code below needs to be changed before being pushed to
        leaves_taken = Leave.objects.filter(employee=employee,status_id=2).count()
        
     
-    
+        
+
+       
+       
+       
        Total_off_days = Approved_leave.objects.filter(leaveid__employee=employee).aggregate(total_days=Sum('leaveid__duration'))['total_days']
        sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
        compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
@@ -320,9 +325,11 @@ def leave_history(request,id):
     
     
     Total_off_days = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    
     sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     general_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    
     
     Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
     sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
@@ -394,16 +401,9 @@ def simple_employee_search(request):
 
 
 
-@login_required
-@user_passes_test(is_manager)
-def search_employees(request):
-    if 'term' in request.GET:
-        qs = User.objects.filter(First_Name__icontains=request.GET.get('term'))
-        names = list()
-        for employee in qs:
-            names.append(employee.First_Name + ' ' + employee.Last_name)
-        return JsonResponse(names, safe=False)
-    return render(request, 'search.html')
+
+
+
 
 
 
