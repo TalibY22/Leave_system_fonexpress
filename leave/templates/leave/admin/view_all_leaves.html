@@ -17,7 +17,7 @@
                       <select id="department" name="department" class="form-control">
                           <option value="" selected>Department</option>
                           {%for department in departments%}
-                            <option value="{{department}}" selected>{{department}}</option>
+                            <option value="{{department}}">{{department}}</option>
                             {%endfor%}
                           <!-- Populate with departments dynamically if needed -->
                       </select>
@@ -30,7 +30,7 @@
                       <select id="branch" name="branch" class="form-control">
                           <option value="" selected>Branch</option>
                           {%for branch in branches%}
-                            <option value="{{department}}" selected>{{department}}</option>
+                            <option value="{{branch}}">{{branch}}</option>
                             {%endfor%}
                           <!-- Populate with branches dynamically if needed -->
                       </select>

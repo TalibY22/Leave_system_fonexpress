@@ -10,6 +10,18 @@ from rest_framework import status
 from  .serializers import LeaveSerializer,BalancerSerializer
 
 
+
+######################
+
+#Routes specification 
+
+
+
+
+
+######################
+
+
 @api_view(['GET'])
 def Leave_history(request,employee_id):
        pati =  Leave.objects.filter(id=employee_id)
@@ -25,3 +37,4 @@ def leave_days(request,employeeid):
        leave = leave_balancer.objects.filter(employee=employee)
        serialiser = BalancerSerializer(leave,many=True,context=serializer_context)
        return Response(serialiser.data)
+

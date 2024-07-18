@@ -27,7 +27,7 @@ def is_manager(user):
     return user.groups.filter(name='Manager').exists()
 
 # Create your views here.
-#todo get nav from db
+#code below is terrible  
 @login_required
 def home(request):
     if is_manager(user=request.user):
@@ -40,13 +40,16 @@ def home(request):
 
          employee_on_leave2 = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today()).count()
          employee_on_leave = Leave.objects.filter(start_date__lte=date.today(),status_id=2, end_date__gte=date.today())
+          
          
+         three_days_later = date.today() + timedelta(days=3)
+       
 
          
          
          
      
-         return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_requests":requests})
+         return render(request,"leave/admin/admin_dashboard.html",{"leaves":employee_on_leave,"upcoming_leaves":upcoming_leaves,"rejected_leaves":rejected_leaves,"employees_on_leave":employee_on_leave2,"leave_requests":requests,})
     else:
        
        employee = get_object_or_404(Employee, user=request.user)
@@ -67,7 +70,7 @@ def home(request):
     
        Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
        sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
-    
+       
        compulsory_days_available = Leave_balance_compulsory.remaining_days
        sick_days_available = sick_balance.remaining_days
     
@@ -81,6 +84,7 @@ def home(request):
         'offdays':leaves_taken,
         'paid_leave':compulsory_days_available,
         'sick_days':sick_leaves_taken,
+        'sick_days_available':sick_days_available,
         'paid_leaves_taken':compulsory_leave_days,
 
         

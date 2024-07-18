@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%78(_@ma601pqv$e5#v(e0#j54)kt3g7=8r-2yj16!1ium@uer
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'leave-fdl.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'leave-fdl.up.railway.app','0.0.0.0']
 
 
 # Application definition
@@ -168,7 +168,6 @@ JAZZMIN_SETTINGS = {
     "site_brand": "fonexpress ltd",
 
     "copyright": "fonexpress Ltd",
-
     "search_model": ["auth.User", "auth.Group","leave.employee","leave.leave_balancer"]
 
 

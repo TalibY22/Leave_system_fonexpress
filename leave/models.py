@@ -88,10 +88,6 @@ class Employee(models.Model):
           return self.First_Name
 
 
-#THIS MODEL IS THE ONE WHICH IS RESPONSIBLE  FOR TRACKING LEAVe DAYS
-
-#GET LEAVE_BALANCE  BALANCE WHERE USER = AND LEAVE TYPE IS 
-#BELOW IS A CORE MODEL IT WILL HANDLE ALL THE DAYS REMAINING ND ALL
 class leave_balancer(models.Model):
       employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
       leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)

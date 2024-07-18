@@ -2,10 +2,18 @@ import calendar
 import datetime as dt
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
+from.models import Leave,Employee,leave_balancer
 from apscheduler.schedulers.background import BackgroundScheduler
 from dateutil.relativedelta import relativedelta
 
 today = datetime.now()
+
+
+
+
+
+
+
 
 
 
@@ -26,7 +34,7 @@ def send_email():
 def start_schedule():
 
  scheduler = BackgroundScheduler()
- scheduler.add_job(send_email, "interval", minutes=2)
+ scheduler.add_job(send_email, "interval", hours=24)
 
  print("hy")
  scheduler.start()
