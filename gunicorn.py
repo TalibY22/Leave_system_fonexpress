@@ -4,3 +4,4 @@ timeout = 90
 
 
 #number of workers = 2 * number of CPU cores + 1
+#gunicorn -c gunicorn.py Leave_system_fonexpress.wsgi:application
