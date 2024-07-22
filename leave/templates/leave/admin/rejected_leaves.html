@@ -30,7 +30,7 @@
           {% for leave in leaves %}
           <tr class="table-primary">
             <td>
-              <form action="{%url 'delete' leave.id%}" method="post">
+              <form action="{%url 'delete' leave.id 2%}" method="post">
                 {%csrf_token%}
                 <button type="submit" class="btn btn-danger">
                 Delete record<i class="fa-solid fa-trash-can fa-lg"></i>

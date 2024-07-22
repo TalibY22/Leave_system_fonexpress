@@ -31,6 +31,6 @@ urlpatterns = [
    path("manager/accept/<int:id>",views.Accept_leave,name="accept"),
    path("manager/history/<int:id>",views.leave_history,name="history"),
    
-    path("manager/delete/<int:id>",views.Delete_leave_record,name="delete"),
+    path("manager/delete/<int:id>/<int:rid>",views.Delete_leave_record,name="delete"),
 ]
 

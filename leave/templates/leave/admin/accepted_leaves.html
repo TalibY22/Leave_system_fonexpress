@@ -78,7 +78,7 @@
                     {% for leave in leaves %}
                     <tr class="table-primary">
                         <td>
-                            <form action="{% url 'delete' leave.id %}" method="post">
+                            <form action="{% url 'delete' leave.id  1 %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="btn-sm btn-danger">
                                     Delete  <i class="fa-solid fa-trash-can fa-lg"></i>

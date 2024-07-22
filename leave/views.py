@@ -65,7 +65,8 @@ def home(request):
        Total_off_days = Approved_leave.objects.filter(leaveid__employee=employee).aggregate(total_days=Sum('leaveid__duration'))['total_days']
        sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
        compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-       
+       unpaid_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+
        general_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     
        Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
@@ -86,6 +87,7 @@ def home(request):
         'sick_days':sick_leaves_taken,
         'sick_days_available':sick_days_available,
         'paid_leaves_taken':compulsory_leave_days,
+        'unpaid_leaves_taken':unpaid_leave_days,
 
         
        }
@@ -117,15 +119,15 @@ def apply_leave(request):
                 new_leave.save()
 
                 #The code below  needs to be optimised will cause bottlenecks in production
-                send_mail(
-           "Leave request has been made  ",
-             " A leave request has been made",
+                #send_mail(
+          # "Leave request has been made  ",
+             #" A leave request has been made",
             "foneexpress@gmail.com",
-            ["yakubtalib70@gmail.com"],
-            fail_silently=False,
-          )
+            #["yakubtalib70@gmail.com"],
+            #fail_silently=False,
+          #)
                 
-                return render(request,'leave/apply.html',{"form":LeaveForm(),"success":True})
+            return render(request,'leave/apply.html',{"form":LeaveForm(),"success":True})
         
         
         Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
@@ -258,14 +260,14 @@ def reject_leave(request, id):
         
         leave.save()
         
-        subject = "Leave Rejected"
-        message = reason
-        from_email = "foneexpress@gmail.com"
-        recipient_list = ["yakubtalib70@gmail.com"]
+       # subject = "Leave Rejected"
+        #message = reason
+        #from_email = "foneexpress@gmail.com"
+        #recipient_list = ["yakubtalib70@gmail.com"]
         # MY FUTURE SELF THIS WHERE UR MESSAGE CODE GOES DONT MESS THIS UP
         
-        with ThreadPoolExecutor() as executor:
-            executor.submit(send_email, subject, message, from_email, recipient_list)
+        #with ThreadPoolExecutor() as executor:
+            #executor.submit(send_email, subject, message, from_email, recipient_list)
       
         return redirect('view_all_leaves')  
 
@@ -288,13 +290,13 @@ def Accept_leave(request, id):
        
        
        #    This code is gonna be a bootleneck 
-        send_mail(
-           "Leave accepted",
-           "U may proceed to have a leave on the date specified",
-            "foneexpress@gmail.com",
-            ["yakubtalib70@gmail.com"],
-            fail_silently=False,
-        ) 
+        #send_mail(
+          # "Leave accepted",
+           #"U may proceed to have a leave on the date specified",
+            #"foneexpress@gmail.com",
+            #["yakubtalib70@gmail.com"],
+           # fail_silently=False,
+      #  ) 
 
         
 
@@ -421,10 +423,12 @@ def simple_employee_search(request):
 
 @login_required
 @user_passes_test(is_manager)
-def Delete_leave_record(request,id):
+def Delete_leave_record(request,id,rid):
      if request.method =='POST':
           record = Leave.objects.get(id=id)
           record.delete()
-
-          return redirect('accepted_leaves')
+          if rid==1:
+           return redirect('accepted_leaves')
+          else:
+            return redirect('rejected_leaves')
 
