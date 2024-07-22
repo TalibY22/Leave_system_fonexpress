@@ -1,0 +1,43 @@
+step 0 create a myproject file 
+
+sudo nano /etc/nginx/sites-available/myproject
+
+
+
+
+Step 1 create a file myproject 
+
+server {
+    listen 80;
+    server_name 192.168.0.38;  # Replace with your server's IP address
+
+    location / {
+        proxy_pass http://192.168.0.38:8000;  # Replace with the actual IP and port where Gunicorn is running
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /static/ {
+        alias /home/ty/Documents/Leave_system_fonexpress/static/;  # Path to your static files
+    }
+
+    location /media/ {
+        alias /home/ty/Documents/Leave_system_fonexpress/media/;  # Path to your media files
+    }
+
+    error_log /var/log/nginx/myproject_error.log;  # Optional: Path to your error log
+    access_log /var/log/nginx/myproject_access.log;  # Optional: Path to your access log
+}
+
+step 2 create a symbolic link 
+
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled/
+
+step 3 test conf 
+
+sudo nginx -t
+
+step 4 
+sudo systemctl restart nginx
