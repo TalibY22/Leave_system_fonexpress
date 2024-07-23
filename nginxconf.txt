@@ -40,4 +40,5 @@ step 3 test conf
 sudo nginx -t
 
 step 4 
+
 sudo systemctl restart nginx
