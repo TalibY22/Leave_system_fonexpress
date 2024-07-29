@@ -47,8 +47,37 @@ def login_api(request):
 @permission_classes([IsAuthenticated])
 def leave_request(request):
     serializer = LeaveSerializer(data=request.data)
-    pass
+    if serializer.is_valid():
+        #data added manually 
+        
+        employee = get_object_or_404(Employee, user=request.user)
 
+
+
+        #Data acquired from the serializer
+        leave_type = serializer.validated_data['leave_type']
+        reason = serializer.validated_data['reason']
+        start_date = serializer.validated_data['start_date']
+        end_date = serializer.validated_data['end_date']
+        person_covering = serializer.validated_data['person_covering']
+        duration = 3
+         
+        leave = Leave(
+            employee=employee,
+            leave_type=leave_type,
+            reason=reason,
+            start_date=start_date,
+            end_date=end_date,
+            person_covering=person_covering,
+            
+            duration=duration
+        )
+        
+        # Save the leave instance to the database
+        leave.save()
+
+        return Response({"success": "Leave request submitted successfully"}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

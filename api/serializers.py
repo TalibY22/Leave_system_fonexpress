@@ -2,7 +2,7 @@ from leave.models import Leave,Approved_leave,leave_balancer,LeaveType
 from rest_framework import serializers
 from django.contrib.auth.models import Group, User
 
-class LeaveSerializer(serializers.HyperlinkedModelSerializer):
+class LeaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Leave
         fields = ['leave_type', 'reason', 'start_date', 'end_date','person_covering']

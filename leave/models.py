@@ -109,6 +109,7 @@ class Leave(models.Model):
     status = models.ForeignKey(Status,on_delete=models.CASCADE,default=1)
     duration=models.IntegerField()
     image=models.ImageField(upload_to='images/',null=True,blank=True)
+    
      
     def save(self, *args, **kwargs):
         self.duration = self.calculate_duration_excluding_sundays(self.start_date,self.end_date)

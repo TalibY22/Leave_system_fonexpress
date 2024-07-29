@@ -6,5 +6,6 @@ urlpatterns = [
     path('api/history', views.leave_history),
      path('api/days', views.leave_days),
      path('api/login',views.login_api),
+     path('api/apply' ,views.leave_request),
     
 ]
