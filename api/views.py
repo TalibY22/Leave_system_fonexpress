@@ -52,6 +52,8 @@ def leave_history(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def leave_days(request,employeeid):
        employee = get_object_or_404(Employee, id=employeeid)
        serializer_context = {
