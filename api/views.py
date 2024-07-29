@@ -37,6 +37,22 @@ def login_api(request):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+   
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def leave_request(request):
+    serializer = LeaveSerializer(data=request.data)
+    pass
+
+
+
+
+
 
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
