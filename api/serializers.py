@@ -7,10 +7,17 @@ class LeaveSerializer(serializers.HyperlinkedModelSerializer):
         model = Leave
         fields = ['leave_type', 'reason', 'start_date', 'end_date','person_covering']
 
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = ['username','password']
 
 
 class BalancerSerializer(serializers.ModelSerializer):

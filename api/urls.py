@@ -3,7 +3,8 @@ from django.urls import path
 from .import views
 
 urlpatterns = [
-    path('api/history/<int:employee_id>', views.Leave_history),
+    path('api/history/', views.leave_history),
      path('api/days/<int:employeeid>', views.leave_days),
+     path('api/login',views.login_api),
     
 ]
