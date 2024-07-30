@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Leave,LeaveType,Status,Employee,leave_balancer,Department,Branch
+from .models import Leave,LeaveType,Status,Employee,leave_balancer,Department,Branch,Approved_leave
 
 admin.site.register(Leave)
 admin.site.register(LeaveType)
@@ -10,3 +10,4 @@ admin.site.register(Employee)
 admin.site.register(leave_balancer)
 admin.site.register(Department)
 admin.site.register(Branch)
+admin.site.register(Approved_leave)

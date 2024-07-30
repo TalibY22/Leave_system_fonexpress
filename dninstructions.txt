@@ -17,6 +17,7 @@ sqlite3 your_sqlite_db.db .dump > sqlite_dump.sql
 9.sudo nano /etc/postgresql/12/main/pg_hba.conf
 10.host    all             all             0.0.0.0/0            md5
 11.psql -h localhost -U myuser -d mydatabase
+12.sudo systemctl start  postgresql
 
 
 #status
