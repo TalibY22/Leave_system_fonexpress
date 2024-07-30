@@ -33,7 +33,7 @@ def home(request):
     if is_manager(user=request.user):
          
          
-         
+         #PK TO BE CHANGED ACCORDING TO ENTRY IN THE DATABASE 
          upcoming_leaves=Leave.objects.filter(start_date__gt=date.today(),status_id=2).count()
          rejected_leaves =Leave.objects.filter(status_id=3).count()
          requests =Leave.objects.filter(status_id=1).count()
@@ -61,16 +61,16 @@ def home(request):
 
        
        
-       
+       #THIS TO BE CHANGED AFTER DB MIGRATION 
        Total_off_days = Approved_leave.objects.filter(leaveid__employee=employee).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-       sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-       compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-       unpaid_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=1).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=3).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       unpaid_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=2).aggregate(total_days=Sum('leaveid__duration'))['total_days']
 
-       general_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+       general_leave_days = Approved_leave.objects.filter(leaveid__employee=employee,leaveid__leave_type=2).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     
-       Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
-       sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
+       Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=3)
+       sick_balance = leave_balancer.objects.get(employee=employee,leave_type=1)
        
        compulsory_days_available = Leave_balance_compulsory.remaining_days
        sick_days_available = sick_balance.remaining_days
@@ -130,8 +130,8 @@ def apply_leave(request):
             return render(request,'leave/apply.html',{"form":LeaveForm(),"success":True})
         
         
-        Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
-        sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
+        Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=3)
+        sick_balance = leave_balancer.objects.get(employee=employee,leave_type=1)
     
         compulsory_days_available = Leave_balance_compulsory.remaining_days
         sick_days_available = sick_balance.remaining_days
@@ -328,6 +328,7 @@ def active_leaves(request):
 ######
 @login_required
 @user_passes_test(is_manager)
+#THIS FUNCTION TO BE CHANGED TOO
 #Make sure u retrieve data according to financial year
 def leave_history(request,id):
     
@@ -340,13 +341,13 @@ def leave_history(request,id):
     
     Total_off_days = Approved_leave.objects.filter(leaveid__employee_id=id).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     
-    sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=4).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-    compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=8).aggregate(total_days=Sum('leaveid__duration'))['total_days']
-    general_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=5).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    sick_leaves_taken = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=1).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    compulsory_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=3).aggregate(total_days=Sum('leaveid__duration'))['total_days']
+    general_leave_days = Approved_leave.objects.filter(leaveid__employee_id=id,leaveid__leave_type=2).aggregate(total_days=Sum('leaveid__duration'))['total_days']
     
     
-    Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=8)
-    sick_balance = leave_balancer.objects.get(employee=employee,leave_type=4)
+    Leave_balance_compulsory = leave_balancer.objects.get(employee=employee,leave_type=3)
+    sick_balance = leave_balancer.objects.get(employee=employee,leave_type=1)
     
     compulsory_days_available = Leave_balance_compulsory.remaining_days
     sick_days_available = sick_balance.remaining_days

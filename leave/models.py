@@ -66,7 +66,7 @@ class Employee(models.Model):
         if not self.user:
             # Create a new User instance
             username = self.First_Name.lower()
-            password = "123456789Talib"  # Ensure you handle password securely in production
+            password = "123456789Fone"  # Ensure you handle password securely in production
 
             # Create the user with the specified password
             self.user = User.objects.create_user(username=username, password=password)

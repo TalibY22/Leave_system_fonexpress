@@ -26,6 +26,6 @@ sqlite3 your_sqlite_db.db .dump > sqlite_dump.sql
 3 = rejected 
 
 #Leave types
-4=sick Leave
-5= general leave/unpaid
-8 = Annual leave 
+4= sick Leave=1
+5= general leave/unpaid=2
+8 = Annual leave =3
