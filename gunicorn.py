@@ -4,6 +4,8 @@ timeout = 120
 
 
 #number of workers = 2 * number of CPU cores + 1
-#cd
+#cd\
+#gunicorn -c gunicorn.py Leave_system_fonexpress.wsgi:application
+
 worker_class = 'gevent'
 worker_connections = 1000
