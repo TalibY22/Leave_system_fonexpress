@@ -41,7 +41,7 @@
     <div class="card border-primary mb-3">
         <div class="card-header bg-primary text-white">Apply for leave</div>
         <div class="card-body">
-            <form action="" method="post" enctype="multipart/form-data">  <!-- enctype is important -->
+            <form action="" id="apply" method="post" enctype="multipart/form-data">  <!-- enctype is important -->
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary btn-block mt-3">Apply</button>
@@ -50,7 +50,35 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function(){
+        $("#myForm").on("submit", function(event){
+            event.preventDefault();  // Prevent default form submission
 
+            // Create FormData object
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('http://127.0.1/api/apply'),  // The URL defined in the form action
+                type: $(this).attr('method'),  // The method defined in the form (POST in this case)
+                data: formData,  // Send the form data
+                processData: false,  // Important for sending FormData
+                contentType: false,  // Important for sending FormData
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");  // Include the CSRF token
+                },
+                success: function(response){
+                    // Handle success (e.g., show a success message)
+                    alert("Form submitted successfully!");
+                },
+                error: function(xhr, status, error){
+                    // Handle error (e.g., show an error message)
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
 
 
 {%endblock%}
